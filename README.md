@@ -1,5 +1,3 @@
-Luke
-
 
 # The Smallest Starting Point
 
