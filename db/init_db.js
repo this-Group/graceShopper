@@ -1,7 +1,7 @@
 // code to build and initialize DB goes here
 const {
-  client
-  // other db methods 
+  client,
+  createAlbum
 } = require('./index');
 
 async function dropTables() {
@@ -20,7 +20,7 @@ async function dropTables() {
 
 async function buildTables() {
   try {
-    await client.connect(`
+    await client.query(`
     CREATE TABLE products(
       id SERIAL PRIMARY KEY,
       artist VARCHAR(255) NOT NULL,
@@ -91,7 +91,7 @@ async function populateInitialData() {
 
 
     ]
-    // const albums = await Promise.all(albumsToCreate.map())
+    const albums = await Promise.all(albumsToCreate.map(createAlbum))
   } catch (error) {
     throw error;
   }
