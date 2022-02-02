@@ -5,20 +5,18 @@ const RecordsView = () => {
 
     const [ records, setRecords ] = useState();
 
-    const getAllRecords = async () => {
-        // Get all products from the products table using a fetch request from a route
-        // const response = method
-        // const data = await response.json();
-        setRecords(data);
-    }
+    // const getAllRecords = async () => {
+    //     // Get all products from the products table using a fetch request from a route
+    //     // const response = method
+    //     // const data = await response.json();
+    //     setRecords(data);
+    // }
 
     useEffect( () => {
-        getAllRecords()
+        setRecords(getAllProducts())
     }, []);
 
     console.log('This is our records data', records);
-
-    // Add record to cart method
 
     let singleRecordCards = null;
 

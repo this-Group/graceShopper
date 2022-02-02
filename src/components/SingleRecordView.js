@@ -6,20 +6,18 @@ const SingleRecordView = () => {
 
     const [ singleRecord, setSingleRecords ] = useState();
 
-    const getSingleRecord = async () => {
-        // Get one product from the products table using a fetch request from a route with the id
-        // const response = method
-        // const data = await response.json();
-        setSingleRecords(data);
-    }
+    // const getSingleRecord = async () => {
+    //     // Get one product from the products table using a fetch request from a route with the id
+    //     // const response = method
+    //     // const data = await response.json();
+    //     setSingleRecords(data);
+    // }
 
     useEffect( () => {
-        getSingleRecord()
+        setSingleRecords(getProductById());
     }, []);
 
     console.log('This is the single record data', singleRecord);
-
-    // Add record to cart method using id
 
     let singleRecordCard = null;
 
