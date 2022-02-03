@@ -2,9 +2,14 @@ import React, {useState, useEffect} from 'react';
 
 //How do I pass down props for the single record function
 
-const SingleRecordView = () => {
+const SingleRecordView = (props) => {
+    console.log('These are the Single Record props', props)
+    const { record } = props
 
-    const [ singleRecord, setSingleRecords ] = useState();
+    
+
+    const [ record, setRecord ] = useState();
+
 
     // const getSingleRecord = async () => {
     //     // Get one product from the products table using a fetch request from a route with the id
@@ -14,45 +19,42 @@ const SingleRecordView = () => {
     // }
 
     useEffect( () => {
-        setSingleRecords(getProductById());
-    }, []);
+        setRecord(getProductById(record.id));
+    });
 
-    console.log('This is the single record data', singleRecord);
 
-    let singleRecordCard = null;
+    // let singleRecordCard = null;
 
-    if( singleRecord && singleRecord.length){
-        singleRecordCard = <div>
-            {
-                singleRecord.map((singleRecord) =>
-                <div key={singleRecord.id}>
-                    <div>
-                        <img src={singleRecord.picture} alt={singleRecord.title}></img>
-                        <h4>{singleRecord.price}</h4>
-                    </div>
+    // if (singleRecord && singleRecord.length) {
+    //     singleRecordCard = <div>
 
-                    <div>
-                        <h4>{singleRecord.title}</h4>
-                        <p>{singleRecord.artist}</p>
-                        <p>{singleRecord.genre}</p>
-                        <p>Qty. {singleRecord.qty}</p>
-                    </div>
+    //     </div>
+    // };
 
-                    <div>
-                    {/* <Link to="/SingleRecordView">View Record</Link> */}
-                    <button onClick={addToCart(singleRecord.id)}>Add to Cart</button>
-                    </div>
-
-                </div>
-                )
-            }
-        </div>
-    };
-
-    return(
+    return (
         <div>
             <div>
-                {singleRecordCard}
+                {
+                    <div key={record.id}>
+                        <div>
+                            <img src={record.picture} alt={record.title}></img>
+                            <h4>{record.price}</h4>
+                        </div>
+
+                        <div>
+                            <h4>{record.title}</h4>
+                            <p>{record.artist}</p>
+                            <p>{record.genre}</p>
+                            <p>Qty. {record.qty}</p>
+                        </div>
+
+                        <div>
+                            <button onClick={addToCart(record.id)}>Add to Cart</button>
+                        </div>
+
+                    </div>
+
+                }
             </div>
         </div>
     );
