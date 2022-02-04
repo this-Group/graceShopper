@@ -2,6 +2,7 @@ const client = require ('./client');
 
 
 const createAlbum = async ({artist, title, description, price, qty}) => {
+    console.log('this is the createAlbum func')
     try {
         const { rows: [album] } = await client.query(`
             INSERT INTO products(artist, title, description, price, qty)
@@ -15,3 +16,5 @@ const createAlbum = async ({artist, title, description, price, qty}) => {
         console.error(error);
     }
 };
+
+module.exports =  {createAlbum};

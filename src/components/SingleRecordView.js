@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 
 const SingleRecordView = (props) => {
     console.log('These are the Single Record props', props)
-    const { record } = props
+    // const { record } = props
 
     
 
