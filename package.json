@@ -8,9 +8,9 @@
     "client:dev": "react-scripts start",
     "client:build": "react-scripts build",
     "server:dev": "nodemon index.js",
-    "db:build": "node ./db/init_db",
+    "db:build": "nodemon ./db/init_db",
     "start": "node index.js",
-    "seed:dev": "nodemon ./db/init_db"
+    "seed:dev": "nodemon ./db/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,7 @@
     "axios": "^0.19.2",
     "express": "^4.17.2",
     "morgan": "^1.10.0",
-    "pg": "^8.7.1",
+    "pg": "^8.7.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",

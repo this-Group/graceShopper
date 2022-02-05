@@ -1,21 +1,26 @@
 // code to build and initialize DB goes here
-const { client }= require('./index');
+
 const {createAlbum} = require('./albums');
+const { client } = require('./client');
+
 console.log('testing');
 
-// async function dropTables() {
-//   console.log('dropping all tables ...');
-//   try {
-//     client.connect()
-//     await client.query(`
-//     DROP TABLE IF EXISTS products;
-//     `)
-    
-//   } catch (error) {
-//     console.error(error)
-    
-//   }
-// }
+async function dropTables() {
+  console.log("Dropping all tables...");
+
+  try {
+    await client.query(`
+            DROP TABLE IF EXISTS products;
+            DROP TABLE IF EXISTS users;
+        `);
+
+    console.log("Finished dropping tables!");
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+}
+
 
 async function buildTables() {
   try {
@@ -104,12 +109,22 @@ async function populateInitialData() {
   }
 }
 
+async function rebuildDB() {
+  try {
+    console.log('this is the rebuildDB func');
+    client.connect();
 
-buildTables()
-  .then(populateInitialData)
-  .catch(console.error)
-  .finally(() => client.end());
+    await dropTables();
+    await buildTables();
+    await populateInitialData();
+    
+  } catch (error) {
+    console.log("Error during rebuildDB");
+    throw error;
+  }
+}
 
 module.exports = {
-  rebuildDB
+  rebuildDB,
+  buildTables
 };
