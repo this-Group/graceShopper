@@ -1,10 +1,10 @@
-// Connect to DB
-const client = require('./client')
+// // Connect to DB
+// const client = require('./client')
 
-// database methods
+// // database methods
 
-// export
-module.exports = {
- client
-  // db methods
-}
+// // export
+// module.exports = {
+//  client
+//   // db methods
+// }

@@ -1,14 +1,16 @@
-const client = require ('./client');
+const { client } = require ('./client');
 
 
-const createAlbum = async ({artist, title, description, price, qty}) => {
+async function createAlbum ({artist, title, genre, price, qty}) {
     console.log('this is the createAlbum func')
     try {
-        const { rows: [album] } = await client.query(`
-            INSERT INTO products(artist, title, description, price, qty)
+        const { rows: [album] } = await client.query(
+            `
+            INSERT INTO products(artist, title, genre, price, qty)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
-        `, [artist, title, description, price, qty]);
+            `,
+            [artist, title, genre, price, qty]);
         return album;
         
     } catch (error) {
