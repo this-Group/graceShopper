@@ -2,6 +2,7 @@
 
 const {createAlbum} = require('./albums');
 const { client } = require('./client');
+const { createUser } = require('./users');
 
 console.log('testing');
 
@@ -37,14 +38,23 @@ async function buildTables() {
       price DECIMAL,
       qty INTEGER
     );
-`);
+    `);
+
+    await client.query(`
+    CREATE TABLE users(
+      id SERIAL PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL
+    );
+    `);
+
  console.log('finished building product table')
     // drop tables in correct order
 
     // build tables in correct order
 
   } catch (error) {
-    console.error("error with products table")
+    console.error(error)
     throw error;
   }
 };
@@ -56,7 +66,7 @@ async function populateInitialData() {
     
     const albumsToCreate = [
       {artist: 'CHARLIE WORSHAM', title:'SUGARCANE', genre: 'COUNTRY', price: 25, qty: 0},
-      {artist: ' DAN + SHAY', title:'GOOD THINGS', genre: 'COUNTRY', price: 35, qty: 0},
+      {artist: 'DAN + SHAY', title:'GOOD THINGS', genre: 'COUNTRY', price: 35, qty: 0},
       {artist: 'MIDLAND', title:'THE LAST RESORT', genre: 'COUNTRY', price: 30, qty: 0},
       {artist: 'MICKEY GUYTON', title:'REMEMBER HER NAME', genre: 'COUNTRY', price:26, qty: 0},
       {artist: 'ELVIE SHANE', title:'BACKSLIDER', genre: 'COUNTRY', price: 20, qty: 0},
@@ -108,6 +118,26 @@ async function populateInitialData() {
   }
 }
 
+async function createInitialUsers() {
+  console.log('Starting to create users...');
+  try {
+
+    const usersToCreate = [
+      { username: 'albert', password: 'bertie99' },
+      { username: 'sandra', password: 'sandra123' },
+      { username: 'glamgal', password: 'glamgal123' },
+    ]
+    const users = await Promise.all(usersToCreate.map(createUser));
+
+    console.log('Users created:');
+    console.log(users);
+    console.log('Finished creating users!');
+  } catch (error) {
+    console.error('Error creating users!');
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     console.log('this is the rebuildDB func');
@@ -116,6 +146,7 @@ async function rebuildDB() {
     await dropTables();
     await buildTables();
     await populateInitialData();
+    await createInitialUsers();
     
   } catch (error) {
     console.log("Error during rebuildDB");
@@ -125,5 +156,6 @@ async function rebuildDB() {
 
 module.exports = {
   rebuildDB,
-  buildTables
+  buildTables,
+  createInitialUsers
 };
