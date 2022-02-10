@@ -36,7 +36,9 @@ async function buildTables() {
       title VARCHAR(255) UNIQUE NOT NULL,
       genre VARCHAR(255) NOT NULL,
       price DECIMAL,
-      qty INTEGER
+      qty INTEGER,
+      picture TEXT
+      
     );
     `);
 
@@ -65,7 +67,7 @@ async function populateInitialData() {
     // create useful starting data
     
     const albumsToCreate = [
-      {artist: 'CHARLIE WORSHAM', title:'SUGARCANE', genre: 'COUNTRY', price: 25, qty: 0},
+      {artist: 'CHARLIE WORSHAM', title:'SUGARCANE', genre: 'COUNTRY', price: 25, qty: 0, picture: 'https://i.discogs.com/PcogRQkAgjl3T7VgSqow71Oycm8vf_Fbd-xEI2jdtuM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWltYWdlcy9SLTg3/MDI4MS0xNTIxODgz/Mzg4LTIyMTQuanBl/Zw.jpeg', },
       {artist: 'DAN + SHAY', title:'GOOD THINGS', genre: 'COUNTRY', price: 35, qty: 0},
       {artist: 'MIDLAND', title:'THE LAST RESORT', genre: 'COUNTRY', price: 30, qty: 0},
       {artist: 'MICKEY GUYTON', title:'REMEMBER HER NAME', genre: 'COUNTRY', price:26, qty: 0},

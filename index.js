@@ -2,6 +2,11 @@
 const express = require('express');
 const server = express();
 
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // create logs for everything
 const morgan = require('morgan');
 server.use(morgan('dev'));

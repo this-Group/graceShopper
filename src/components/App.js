@@ -1,31 +1,36 @@
-// import React, { useState, useEffect } from 'react';
-// import { Route, Switch } from 'react-router-dom';
-// import AllRecordsView from './AllRecordsView'
+import React, { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import AllRecordsView from './AllRecordsView';
 
-// import {
-//   getSomething
-// } from '../api';
+import {
+  getSomething,
+  getAllProducts
+} from '../api';
 
-// const App = () => {
-//   const [message, setMessage] = useState('');
 
-//   useEffect(() => {
-//     getSomething()
-//       .then(response => {
-//         setMessage(response.message);
-//       })
-//       .catch(error => {
-//         setMessage(error.message);
-//       });
-//   });
 
-//   //---------------------------------------------------------
 
-//   const [ records, setRecords ] = useState();
+const App = () => {
+    console.log('hello from App')
+  const [message, setMessage] = useState('');
 
-//   useEffect( () => {
-//     setRecords(getAllProducts())
-// }, []);
+  useEffect(() => {
+    getSomething()
+      .then(response => {
+        setMessage(response.message);
+      })
+      .catch(error => {
+        setMessage(error.message);
+      });
+  });
+
+  //---------------------------------------------------------
+
+  const [ records, setRecords ] = useState();
+
+  useEffect( () => {
+    setRecords(getAllProducts())
+}, []);
 
 
 //   const [ singleRecord, setSingleRecords ] = useState();
@@ -34,14 +39,16 @@
 //     setSingleRecords(getProductById());
 // }, []);
 
-//   return (
-//     <div className="App">
-//       <h1>Hello, World!</h1>
-//       <h2>{ message }</h2>
-      
-//       <AllRecordsView records={records}/>
-//     </div>
-//   );
-// }
+  return (
+    <div className="App">
+      <h1>Hello, World!</h1>
+      <h2>{ message }</h2>
 
-// export default App;
+
+      {/* <Route path="/Activities" component={Activities} />
+      <AllRecordsView records={records}/> */}
+    </div>
+  );
+}
+
+export default App;

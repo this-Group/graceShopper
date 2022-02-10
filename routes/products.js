@@ -5,7 +5,7 @@ const productsRouter = express.Router();
 const {
     getAllProducts,
     getProductById
- } = require("../../db/products")
+ } = require("../db/products")
 
  //GET ALL PRODUCTS
 
