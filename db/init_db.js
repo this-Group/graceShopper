@@ -25,7 +25,7 @@ async function dropTables() {
 
 async function buildTables() {
   try {
-    // client.connect()
+
     await client.query(`
     DROP TABLE IF EXISTS products;
     `)
