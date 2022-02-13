@@ -21,3 +21,11 @@ export async function getAllProducts() {
   }
 }
 
+export async function getProductById(id) {
+  try {
+    const { data } = await fetch(`${BASE_URL}/api/products/${id}`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

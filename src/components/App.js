@@ -4,7 +4,7 @@ import AllRecordsView from './AllRecordsView';
 
 import {
   getSomething,
-  getAllProducts
+  // getAllProducts
 } from '../api';
 
 
@@ -14,23 +14,23 @@ const App = () => {
     console.log('hello from App')
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    getSomething()
-      .then(response => {
-        setMessage(response.message);
-      })
-      .catch(error => {
-        setMessage(error.message);
-      });
-  });
+  // useEffect(() => {
+  //   getSomething()
+  //     .then(response => {
+  //       setMessage(response.message);
+  //     })
+  //     .catch(error => {
+  //       setMessage(error.message);
+  //     });
+  // });
 
   //---------------------------------------------------------
 
-  const [ records, setRecords ] = useState();
+//   const [ records, setRecords ] = useState();
 
-  useEffect( () => {
-    setRecords(getAllProducts())
-}, []);
+//   useEffect( () => {
+//     setRecords(getAllProducts())
+// }, []);
 
 
 //   const [ singleRecord, setSingleRecords ] = useState();
@@ -42,11 +42,13 @@ const App = () => {
   return (
     <div className="App">
       <h1>Hello, World!</h1>
-      <h2>{ message }</h2>
+      {/* <h2>{ message }</h2> */}
 
 
-      {/* <Route path="/Activities" component={Activities} />
-      <AllRecordsView records={records}/> */}
+      {/* <Route path="/allrecords" component={AllRecordsView} />
+      <AllRecordsView records={records}/> 
+      </Route>
+      */}
     </div>
   );
 }

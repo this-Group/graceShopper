@@ -1,6 +1,7 @@
 // code to build and initialize DB goes here
 
 const {createAlbum} = require('./albums');
+const { createUser } = require('./users');
 const { client } = require('./client');
 
 console.log('testing');
@@ -39,10 +40,38 @@ async function buildTables() {
       qty INTEGER
     );
 `);
+
+
  console.log('finished building product table')
     // drop tables in correct order
 
     // build tables in correct order
+
+    await client.query(`
+    DROP TABLE IF EXISTS users;
+    `)
+
+    await client.query(`
+    CREATE TABLE users(
+      id SERIAL PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL
+    );
+    `);
+
+
+    await client.query(`
+    DROP TABLE IF EXISTS orders;
+    `)
+
+    await client.query(`
+    CREATE TABLE orders(
+      id SERIAL PRIMARY KEY,
+      "userId" INTEGER REFERENCES users(id),
+      "productId" INTEGER REFERENCES products(id),
+      qty INTEGER
+    );
+    `);
 
   } catch (error) {
     console.error("error with products table")
@@ -109,6 +138,47 @@ async function populateInitialData() {
   }
 }
 
+async function createInitialUsers() {
+  console.log('Starting to create users...');
+  try {
+
+    const usersToCreate = [
+      { username: 'albert', password: 'bertie99' },
+      { username: 'sandra', password: 'sandra123' },
+      { username: 'glamgal', password: 'glamgal123' },
+    ]
+    const users = await Promise.all(usersToCreate.map(createUser));
+
+    console.log('Users created:');
+    console.log(users);
+    console.log('Finished creating users!');
+  } catch (error) {
+    console.error('Error creating users!');
+    throw error;
+  }
+}
+
+async function createInitialOrders() {
+  console.log('Starting to create orders...');
+  try {
+
+    const ordersToCreate = [
+      {userId: 1, productId: 1, qty: 1},
+      {userId: 2, productId: 4, qty: 2},
+      {userId: 3, productId: 2, qty: 1},
+      {userId: 3, productId: 3, qty: 1}
+    ]
+    const orders = await Promise.all(ordersToCreate.map(creatOrder));
+
+    console.log('Orders created:');
+    console.log(users);
+    console.log('Finished creating orders!');
+  } catch (error) {
+    console.error('Error creating users!');
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     console.log('this is the rebuildDB func');
@@ -117,6 +187,8 @@ async function rebuildDB() {
     await dropTables();
     await buildTables();
     await populateInitialData();
+    await createInitialUsers();
+    await createInitialOrders();
     
   } catch (error) {
     console.log("Error during rebuildDB");
