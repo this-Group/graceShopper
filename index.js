@@ -2,6 +2,15 @@
 const express = require('express');
 const server = express();
 
+server.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Credentials", false);
+
+  next(); 
+})
+
 // create logs for everything
 const morgan = require('morgan');
 server.use(morgan('dev'));
@@ -22,7 +31,7 @@ server.use((req, res, next) => {
 });
 
 // bring in the DB connection
-// const { client } = require('./db');
+const { client } = require('./db/client');
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
