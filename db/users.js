@@ -39,7 +39,7 @@ async function loginUser( username, password ) {
 async function checkForUsername(username) {
     try {
         const { rows: [user] } = await client.query(`
-            SELECT usename 
+            SELECT username 
             FROM users
             WHERE username = $1);
         `, [username]);
