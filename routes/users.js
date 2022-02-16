@@ -21,8 +21,11 @@ userRouter.post("/signup", async (req, res, next) => {
     //     { message: 'This is the signup router'}
     // )
     const { username, password } = req.body;
+    console.log("signup", username, password )
 
-    const checkUsername = checkForUsername(username);
+    const checkUsername = await checkForUsername(username);
+
+    console.log("checkUser is", checkUsername )
 
     if (checkUsername) {
         res.status(401)
@@ -34,16 +37,19 @@ userRouter.post("/signup", async (req, res, next) => {
 
         try {
             const newUser = await createUser(username, password);
-            if(newUser){
-                const userToken = jwt.sign({
-                    username,
-                    password,
-                    id: user.id
-                }, SECRET);
+            console.log("This is the new user", newUser )
+            // if(newUser){
+            //     const userToken = jwt.sign({
+            //         username,
+            //         password,
+            //         id: user.id
+            //     }, SECRET);
 
-                res.status(200).send( {userToken: userToken}, newUser);
-                localStorage.setItem('token', userToken );
-            }
+            //     res.status(200).send( {userToken: userToken}, newUser);
+            //     localStorage.setItem('token', userToken );
+            // }
+
+            res.status(200).send( newUser );
         } catch (error) {
             console.log('the signup post handeler failed');
             return next(error);
@@ -76,15 +82,17 @@ userRouter.post("/login", async (req, res, next) => {
         try {
             const  user= await loginUser(username, password);
             console.log('This is the user data from login', user);
-            if(user){
-                const userToken = jwt.sign({
-                    username,
-                    password,
-                    id: user.id
-                }, SECRET);
-                res.status(200).send( {userToken: userToken}, user);
-                // localStorage.setItem('token', userToken );
-            }
+            // if(user){
+            //     const userToken = jwt.sign({
+            //         username,
+            //         password,
+            //         id: user.id
+            //     }, SECRET);
+            //     res.status(200).send( {userToken: userToken}, user);
+            //     // localStorage.setItem('token', userToken );
+            // }
+
+            res.status(200).send( user );
 
             
         } catch (error) {

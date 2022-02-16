@@ -1,6 +1,24 @@
 const { client } = require("./client");
 
-async function createUser( {username, password} ) {
+async function createUserForTables( {username, password} ) {
+    try {
+        const { rows: [user] } = await client.query(`
+            INSERT INTO users(username, password)
+            VALUES ($1, $2)
+            ON CONFLICT (username) DO NOTHING
+            RETURNING *;
+            `, [username, password]);
+
+            return user
+        
+
+    } catch (error) {
+        console.log('createUser function failed');
+        console.error(error);
+        throw error;
+    }
+}
+async function createUser( username, password ) {
     try {
         const { rows: [user] } = await client.query(`
             INSERT INTO users(username, password)
@@ -20,26 +38,30 @@ async function createUser( {username, password} ) {
 }
 
 //Should this be SELECT * indstead of just id so it returns the full user?
-async function loginUser( {username, password} ) {
+async function loginUser( username, password ) {
     try {
-        const { rows: [user] } = await client.query(`
+        const { rows } = await client.query(`
             SELECT * 
             FROM users
-            WHERE username = $1 
+            WHERE username = $1 AND password = $2
             LIMIT 1;
-        `, [username]);
+        `, [username, password]);
 
-        console.log("this is user from login func", user)
+        const currentUser = rows[0]
+
+        console.log("this is user from login func", currentUser)
         
 
-        if (!user) return null; 
+        if (!currentUser) return null; 
 
-        const doesPasswordsMatch = compare(password, user.password);
-        console.log('the passwords match:', doesPasswordsMatch)
+        return currentUser
 
-        if (doesPasswordsMatch) return user ; 
+        // const doesPasswordsMatch = compare(password, currentUser.password);
+        // console.log('the passwords match:', doesPasswordsMatch)
 
+        // if (doesPasswordsMatch) return currentUser ; 
 
+        return null
         
 
     } catch (error) {
@@ -50,6 +72,7 @@ async function loginUser( {username, password} ) {
 }
 
 async function checkForUsername(username) {
+    console.log("checking", username)
     try {
         const { rows: [user] } = await client.query(`
             SELECT username 
@@ -94,5 +117,6 @@ module.exports = {
     createUser,
     loginUser,
     checkForUsername,
+    createUserForTables
     // getUserByUsername
   };

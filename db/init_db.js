@@ -1,7 +1,7 @@
 // code to build and initialize DB goes here
 
 const {createAlbum} = require('./albums');
-const { createUser } = require('./users');
+const { createUserForTables } = require('./users');
 const { client } = require('./client');
 
 console.log('testing');
@@ -149,7 +149,7 @@ async function createInitialUsers() {
       { username: 'sandra', password: 'sandra123' },
       { username: 'glamgal', password: 'glamgal123' },
     ]
-    const users = await Promise.all(usersToCreate.map(createUser));
+    const users = await Promise.all(usersToCreate.map(createUserForTables));
 
     console.log('Users created:', users);
     console.log(users);
