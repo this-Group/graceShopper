@@ -1,7 +1,7 @@
 // code to build and initialize DB goes here
 
 const {createAlbum} = require('./albums');
-const { createUser } = require('./users');
+const { createUserForTables } = require('./users');
 const { client } = require('./client');
 
 console.log('testing');
@@ -11,8 +11,11 @@ async function dropTables() {
 
   try {
     await client.query(`
-            DROP TABLE IF EXISTS products;
+
+            DROP TABLE IF EXISTS orders;
             DROP TABLE IF EXISTS users;
+            DROP TABLE IF EXISTS products;
+
         `);
 
     console.log("Finished dropping tables!");
@@ -25,7 +28,6 @@ async function dropTables() {
 
 async function buildTables() {
   try {
-
     await client.query(`
     DROP TABLE IF EXISTS products;
     `)
@@ -37,7 +39,8 @@ async function buildTables() {
       title VARCHAR(255) UNIQUE NOT NULL,
       genre VARCHAR(255) NOT NULL,
       price DECIMAL,
-      qty INTEGER
+      qty INTEGER,
+      picture TEXT
     );
 `);
 
@@ -126,7 +129,6 @@ async function populateInitialData() {
       // {artist: '', title:'', genre: '', price: '', qty: ''},
 
 
-
     ]
     console.log(albumsToCreate);
     const albums = await Promise.all(albumsToCreate.map(createAlbum))
@@ -146,9 +148,9 @@ async function createInitialUsers() {
       { username: 'sandra', password: 'sandra123' },
       { username: 'glamgal', password: 'glamgal123' },
     ]
-    const users = await Promise.all(usersToCreate.map(createUser));
+    const users = await Promise.all(usersToCreate.map(createUserForTables));
 
-    console.log('Users created:');
+    console.log('Users created:', users);
     console.log(users);
     console.log('Finished creating users!');
   } catch (error) {
@@ -157,26 +159,26 @@ async function createInitialUsers() {
   }
 }
 
-async function createInitialOrders() {
-  console.log('Starting to create orders...');
-  try {
+// async function createInitialOrders() {
+//   console.log('Starting to create orders...');
+//   try {
 
-    const ordersToCreate = [
-      {userId: 1, productId: 1, qty: 1},
-      {userId: 2, productId: 4, qty: 2},
-      {userId: 3, productId: 2, qty: 1},
-      {userId: 3, productId: 3, qty: 1}
-    ]
-    const orders = await Promise.all(ordersToCreate.map(creatOrder));
+//     const ordersToCreate = [
+//       {userId: 1, productId: 1, qty: 1},
+//       {userId: 2, productId: 4, qty: 2},
+//       {userId: 3, productId: 2, qty: 1},
+//       {userId: 3, productId: 3, qty: 1}
+//     ]
+//     const orders = await Promise.all(ordersToCreate.map(creatOrder));
 
-    console.log('Orders created:');
-    console.log(users);
-    console.log('Finished creating orders!');
-  } catch (error) {
-    console.error('Error creating users!');
-    throw error;
-  }
-}
+//     console.log('Orders created:');
+//     console.log(users);
+//     console.log('Finished creating orders!');
+//   } catch (error) {
+//     console.error('Error creating users!');
+//     throw error;
+//   }
+// }
 
 async function rebuildDB() {
   try {
@@ -187,7 +189,7 @@ async function rebuildDB() {
     await buildTables();
     await populateInitialData();
     await createInitialUsers();
-    await createInitialOrders();
+    // await createInitialOrders();
     
   } catch (error) {
     console.log("Error during rebuildDB");
