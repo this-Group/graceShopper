@@ -1,20 +1,69 @@
 const { client } = require("./client");
 
-async function createOrder(userId) {
+// maske function to make entry in producvt units
+//orderId, product id, price
+async function createProductUnit() {
     try {
 
+        const rows = await client.query(`
+        INSERT INTO "productUnits"(orderId, productId, price)
+        VALUES ($1, $2, $3)
+        RETURNING *;
+        `,
+        [orderId, productId, price]);
+        return rows;
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+async function createOrder(userId, status) {
+    try {
 
         console.log('inside creatOrder');
         const {rows: [myOrders] = await client.query(`
-            INSERT INTO orders(userId)
-            VALUES $1
+            INSERT INTO orders(userId, status)
+            VALUES ($1, $2)
             RETURNING *;
-             `, [userId]) }
+             `, [userId, status]) }
 
              return myOrders;
         
     } catch (error) {
         throw error;        
+    }
+}
+
+async function getOrders() {
+    try {
+      const {rows} = await client.query(`
+        SELECT * FROM orders;
+      `)  
+      return rows;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function getOrderByOrderID (orderId) {
+    try {
+        const {rows} = await client.query(`
+        SELECT orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture
+        FROM orders
+        JOIN "productUnits" 
+            ON (orders.id = "productUnits"."orderId") 
+        JOIN users
+            ON (users.id = orders."userId")
+        JOIN products
+            ON (products.id = "productUnits"."productId")
+        WHERE orders.id = ${orderId};
+        `);
+        return rows;
+    } catch (error) {
+        console.error(error);
     }
 }
 
