@@ -82,6 +82,9 @@ async function deleteOrder(){
 
 module.exports = {
     createOrder,
-    deleteOrder
+    createProductUnit,
+    deleteOrder, 
+    getOrderByOrderID,
+    getOrders
 };
 
