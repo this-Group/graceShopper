@@ -28,6 +28,7 @@ async function loginUser( {username, password} ) {
             WHERE username = $1 
             LIMIT 1;
         `, [username]);
+
         console.log("this is user from login func", user)
         
 
