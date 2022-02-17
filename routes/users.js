@@ -80,7 +80,7 @@ userRouter.post("/login", async (req, res, next) => {
     } else {
 
         try {
-            const  user= await loginUser(username, password);
+            const  user = await loginUser(username, password);
             console.log('This is the user data from login', user);
             // if(user){
             //     const userToken = jwt.sign({
@@ -102,7 +102,7 @@ userRouter.post("/login", async (req, res, next) => {
     }
 });
 
-// apiRouter.get('/users/me', async (req, res, next) => {
+// userRouter.get('/me', async (req, res, next) => {
 //     const { username } = req.body;
 //     try {
 //         console.log('The user body', req.body);
@@ -110,15 +110,15 @@ userRouter.post("/login", async (req, res, next) => {
 //         const user = await getUserByUsername({ username });
 //             res.send(user);
 
-//         // if (JWT_SECRET){
-//         //     const user = await getUserByUsername({ username });
-//         //     res.send(user);
-//         // } else{
-//         //     next( { 
-//         //         name: "UnauthorizedUserError",
-//         //         message: "Invalid User"
-//         //       });
-//         // }
+//         if (JWT_SECRET){
+//             const user = await getUserByUsername({ username });
+//             res.send(user);
+//         } else{
+//             next( { 
+//                 name: "UnauthorizedUserError",
+//                 message: "Invalid User"
+//               });
+//         }
 
         
 //     } catch (error) {
