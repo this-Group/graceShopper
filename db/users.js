@@ -1,4 +1,5 @@
 const { client } = require("./client");
+const {createOrder} = require("./orders")
 
 async function createUserForTables( {username, password} ) {
     try {
@@ -9,7 +10,9 @@ async function createUserForTables( {username, password} ) {
             RETURNING *;
             `, [username, password]);
 
-            return user
+            
+
+            return user;
         
 
     } catch (error) {
@@ -27,7 +30,10 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
-            return user
+            const newOrder = createOrder( user.id, 'In Cart' );
+            console.log("Create order function at createUser func", newOrder )
+
+            return user;
         
 
     } catch (error) {
@@ -47,14 +53,17 @@ async function loginUser( username, password ) {
             LIMIT 1;
         `, [username, password]);
 
-        const currentUser = rows[0]
+        const user = rows[0]
 
-        console.log("this is user from login func", currentUser)
+        console.log("this is user from login func", user)
+
+        const newOrder = createOrder( user.id, 'In Cart' );
+        console.log("Create order function at createUser func", newOrder )
         
 
-        if (!currentUser) return null; 
+        if (!user) return null; 
 
-        return currentUser
+        return user
 
         // const doesPasswordsMatch = compare(password, currentUser.password);
         // console.log('the passwords match:', doesPasswordsMatch)

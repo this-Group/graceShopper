@@ -1,7 +1,7 @@
 const { client } = require ('./client');
 
 
-async function creatOrder ({ userId, status }) {
+async function createOrder ( userId, status ) {
     console.log('this is the createOrders func')
     try {
         const { rows: [order] } = await client.query(
@@ -19,7 +19,7 @@ async function creatOrder ({ userId, status }) {
     }
 };
 
-async function createProductUnits ({ orderId, productId, price }) {
+async function createProductUnits ( orderId, productId, price ) {
     console.log('this is the createProductUnits func')
     try {
         const { rows: [order] } = await client.query(
@@ -37,4 +37,4 @@ async function createProductUnits ({ orderId, productId, price }) {
     }
 };
 
-module.exports =  {creatOrder, createProductUnits};
+module.exports =  {createOrder, createProductUnits};
