@@ -194,7 +194,7 @@ async function rebuildDB() {
     await buildTables();
     await populateInitialData();
     await createInitialUsers();
-    // await createInitialOrders();
+    await createInitialOrders();
     
   } catch (error) {
     console.log("Error during rebuildDB");
