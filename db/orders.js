@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 const { client } = require ('./client');
 
@@ -43,7 +41,6 @@ async function createProductUnits ( orderId, productId, price ) {
 
 
 const { client } = require("./client");
->>>>>>> 1b58598c6970750323c404c852046caf827e6489
 
 const { client } = require ('./client');
 
@@ -86,7 +83,6 @@ async function createProductUnits ( orderId, productId, price ) {
 
 
 
-<<<<<<< HEAD
 // maske function to make entry in producvt units
 //orderId, product id, price
 // async function createProductUnit() {
@@ -117,7 +113,6 @@ async function createProductUnits ( orderId, productId, price ) {
 //             RETURNING *;
 //              `, [userId, status]) 
 
-=======
 // async function createOrder( { userId, status } ) {
 //     try {
 
@@ -128,18 +123,14 @@ async function createProductUnits ( orderId, productId, price ) {
 //             RETURNING *;
 //              `, [userId, status]) 
 
->>>>>>> 1b58598c6970750323c404c852046caf827e6489
 //              return orders;
         
 //     } catch (error) {
 //         throw error;        
 //     }
 // }
-<<<<<<< HEAD
 //get personal orders
 //update to join with users table
-=======
->>>>>>> 1b58598c6970750323c404c852046caf827e6489
 
 async function getOrders() {
     try {
