@@ -16,12 +16,13 @@ async function createUserForTables( {username, password} ) {
         
 
     } catch (error) {
-        console.log('createUser function failed');
+        console.log('createUser For Tables function failed');
         console.error(error);
         throw error;
     }
 }
 async function createUser( username, password ) {
+    console.log("username and password", username, password)
     try {
         const { rows: [user] } = await client.query(`
             INSERT INTO users(username, password)
@@ -30,8 +31,8 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
-            const newOrder = createOrder( user.id, 'In Cart' );
-            console.log("Create order function at createUser func", newOrder )
+            // const newOrder = createOrder( user.id, 'In Cart' );
+            // console.log("Create order function at createUser func", newOrder )
 
             return user;
         
@@ -58,7 +59,9 @@ async function loginUser( username, password ) {
 
         console.log("this is user from login func", user)
 
-        const newOrder = createOrder( user.id, 'In Cart' );
+        const cartStatus = 'In Cart'
+
+        const newOrder = await createOrder( user.id, cartStatus );
         console.log("Create order function at createUser func", newOrder )
         
 

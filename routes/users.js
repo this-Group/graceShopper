@@ -10,7 +10,8 @@ const userRouter = express.Router();
 const {
     createUser,
     loginUser,
-    checkForUsername
+    checkForUsername,
+    // createUserForTables
     // getUserByUsername
 } = require("../db/users")
 
@@ -27,38 +28,58 @@ userRouter.post("/signup", async (req, res, next) => {
     const { username, password } = req.body;
     console.log("signup", username, password )
 
-    const checkUsername = await checkForUsername(username);
+    // const checkUsername = await checkForUsername(username);
 
-    console.log("checkUser is", checkUsername )
+    // console.log("checkUser is", checkUsername )
 
-    if (checkUsername) {
-        res.status(401)
-        next({
-            name: "UsernameTakenError",
-            message: "The username is taken"
-        });
-    } else {
+    try {
+        const newUser = await createUser( username, password );
+        console.log("This is the new user", newUser )
+        // if(newUser){
+        //     const userToken = jwt.sign({
+        //         username,
+        //         password,
+        //         id: user.id
+        //     }, SECRET);
 
-        try {
-            const newUser = await createUser(username, password);
-            console.log("This is the new user", newUser )
-            // if(newUser){
-            //     const userToken = jwt.sign({
-            //         username,
-            //         password,
-            //         id: user.id
-            //     }, SECRET);
+        //     res.status(200).send( {userToken: userToken}, newUser);
+        //     localStorage.setItem('token', userToken );
+        // }
 
-            //     res.status(200).send( {userToken: userToken}, newUser);
-            //     localStorage.setItem('token', userToken );
-            // }
-
-            res.status(200).send( newUser );
-        } catch (error) {
-            console.log('the signup post handeler failed');
-            return next(error);
-        }
+        res.status(200).send( newUser );
+    } catch (error) {
+        console.log('the signup post handeler failed');
+        return next(error);
     }
+
+    // if (checkUsername) {
+    //     res.status(401)
+    //     next({
+    //         name: "UsernameTakenError",
+    //         message: "The username is taken"
+    //     });
+    // } else {
+
+    //     try {
+    //         const newUser = await createUserForTables(username, password);
+    //         console.log("This is the new user", newUser )
+    //         // if(newUser){
+    //         //     const userToken = jwt.sign({
+    //         //         username,
+    //         //         password,
+    //         //         id: user.id
+    //         //     }, SECRET);
+
+    //         //     res.status(200).send( {userToken: userToken}, newUser);
+    //         //     localStorage.setItem('token', userToken );
+    //         // }
+
+    //         res.status(200).send( newUser );
+    //     } catch (error) {
+    //         console.log('the signup post handeler failed');
+    //         return next(error);
+    //     }
+    // }
 });
 
 

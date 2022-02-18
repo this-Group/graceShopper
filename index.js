@@ -1,6 +1,7 @@
 // This is the Web Server
 const express = require('express');
 const server = express();
+const bodyParser = require('body-parser');
 
 server.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -22,6 +23,8 @@ server.use(express.json());
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
+server.use(bodyParser.urlencoded({ extended : false })); 
+
 // here's our API
 server.use('/api', require('./routes'));
 
@@ -33,10 +36,15 @@ server.use((req, res, next) => {
 // bring in the DB connection
 const { client } = require('./db/client');
 
+
+
 // connect to the server
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, async () => {
   console.log(`Server is running on ${ PORT }!`);
+
+
+
 
   try {
     await client.connect();

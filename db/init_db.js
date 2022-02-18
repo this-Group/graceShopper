@@ -58,6 +58,11 @@ async function buildTables() {
     // build tables in correct order
 
 
+    // await client.query(`
+    // DROP TABLE IF EXISTS users;
+    // `)
+
+
     await client.query(`
     CREATE TABLE users(
       id SERIAL PRIMARY KEY,
@@ -65,6 +70,13 @@ async function buildTables() {
       password VARCHAR(255) NOT NULL
     );
     `);
+
+
+
+    // await client.query(`
+    // DROP TABLE IF EXISTS orders;
+    // `)
+
 
     await client.query(`
     CREATE TABLE orders(
@@ -75,9 +87,9 @@ async function buildTables() {
     `);
 
 
-    await client.query(`
-    DROP TABLE IF EXISTS "productUnits";
-    `)
+    // await client.query(`
+    // DROP TABLE IF EXISTS "productUnits";
+    // `)
 
 
     await client.query(`
