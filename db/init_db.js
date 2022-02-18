@@ -12,10 +12,14 @@ async function dropTables() {
 
   try {
     await client.query(`
+
             DROP TABLE IF EXISTS "productUnits";
             DROP TABLE IF EXISTS orders;
-            DROP TABLE IF EXISTS users;
             DROP TABLE IF EXISTS products;
+            DROP TABLE IF EXISTS users;
+           
+           
+           
 
         `);
 
@@ -29,10 +33,11 @@ async function dropTables() {
 
 async function buildTables() {
   try {
-    // client.connect()
-    // await client.query(`
-    // DROP TABLE IF EXISTS product;
-    // `)
+
+    await client.query(`
+    DROP TABLE IF EXISTS products;
+    `)
+
     console.log('starting to build tables')
     await client.query(`
     CREATE TABLE products(
@@ -52,9 +57,11 @@ async function buildTables() {
 
     // build tables in correct order
 
+
     // await client.query(`
     // DROP TABLE IF EXISTS users;
     // `)
+
 
     await client.query(`
     CREATE TABLE users(
@@ -65,9 +72,11 @@ async function buildTables() {
     `);
 
 
+
     // await client.query(`
     // DROP TABLE IF EXISTS orders;
     // `)
+
 
     await client.query(`
     CREATE TABLE orders(
@@ -77,9 +86,11 @@ async function buildTables() {
     );
     `);
 
+
     // await client.query(`
     // DROP TABLE IF EXISTS "productUnits";
     // `)
+
 
     await client.query(`
       CREATE TABLE "productUnits"(

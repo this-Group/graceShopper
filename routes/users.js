@@ -17,10 +17,14 @@ const {
 
 //Register or Signup a user
 
+
+
+
 userRouter.post("/signup", async (req, res, next) => {
-    // res.send(
-    //     { message: 'This is the signup router'}
-    // )
+    res.send(
+        { message: 'This is the signup router'}
+    )
+
     const { username, password } = req.body;
     console.log("signup", username, password )
 
@@ -77,6 +81,7 @@ userRouter.post("/signup", async (req, res, next) => {
     //     }
     // }
 });
+
 
 //Login a user 
 
