@@ -1,5 +1,26 @@
 const { client } = require("./client");
+const {createOrder} = require("./orders")
 
+async function createUserForTables( {username, password} ) {
+    try {
+        const { rows: [user] } = await client.query(`
+            INSERT INTO users(username, password)
+            VALUES ($1, $2)
+            ON CONFLICT (username) DO NOTHING
+            RETURNING *;
+            `, [username, password]);
+
+            
+
+            return user;
+        
+
+    } catch (error) {
+        console.log('createUser function failed');
+        console.error(error);
+        throw error;
+    }
+}
 async function createUser( username, password ) {
     try {
         const { rows: [user] } = await client.query(`
@@ -9,7 +30,12 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
+            const newOrder = createOrder( user.id, 'In Cart' );
+            console.log("Create order function at createUser func", newOrder )
+
             return user;
+        
+
 
     } catch (error) {
         console.log('createUser function failed');
@@ -18,25 +44,45 @@ async function createUser( username, password ) {
     }
 }
 
+//Should this be SELECT * indstead of just id so it returns the full user?
 async function loginUser( username, password ) {
     try {
-        const { rows: [user] } = await client.query(`
-            SELECT id 
+        const { rows } = await client.query(`
+            SELECT * 
             FROM users
-            WHERE username = $1, password = $2)
+            WHERE username = $1 AND password = $2
             LIMIT 1;
         `, [username, password]);
 
-        return user;
+        const user = rows[0]
+
+        console.log("this is user from login func", user)
+
+        const newOrder = createOrder( user.id, 'In Cart' );
+        console.log("Create order function at createUser func", newOrder )
+        
+
+        if (!user) return null; 
+
+        return user
+
+        // const doesPasswordsMatch = compare(password, currentUser.password);
+        // console.log('the passwords match:', doesPasswordsMatch)
+
+        // if (doesPasswordsMatch) return currentUser ; 
+
+        return null
+        
 
     } catch (error) {
-        console.log('getUser function failed');
+        console.log('loginUser function failed');
         console.error(error);
         throw error;
     }
 }
 
 async function checkForUsername(username) {
+    console.log("checking", username)
     try {
         const { rows: [user] } = await client.query(`
             SELECT username 
@@ -58,8 +104,29 @@ async function checkForUsername(username) {
     }
 }
 
+// async function getUserByUsername(username) {
+//     try {
+//         const {rows: [user] } = await client.query(`
+//             SELECT * 
+//             FROM users
+//             WHERE username = $1
+//             RETURNING *;
+//         `, [username]);
+
+//         return {
+//             "id": user.id,
+//             "username": user.username
+//         }
+//     } catch (error) {
+//         console.log('getUserById function failed');
+//         console.error(error);
+//     }
+// }
+
 module.exports = {
     createUser,
     loginUser,
-    checkForUsername
+    checkForUsername,
+    createUserForTables
+    // getUserByUsername
   };

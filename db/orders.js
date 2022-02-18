@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 
 const { client } = require ('./client');
 
@@ -40,6 +42,51 @@ async function createProductUnits ( orderId, productId, price ) {
 
 
 
+const { client } = require("./client");
+>>>>>>> 1b58598c6970750323c404c852046caf827e6489
+
+const { client } = require ('./client');
+
+
+async function createOrder ( userId, status ) {
+    console.log('this is the createOrders func')
+    try {
+        const { rows: [order] } = await client.query(
+            `
+            INSERT INTO orders("userId", status)
+            VALUES ($1, $2)
+            RETURNING *;
+            `,
+            [userId, status]);
+        return order;
+        
+    } catch (error) {
+        console.log('createOrder func failed');
+        console.error(error);
+    }
+};
+
+async function createProductUnits ( orderId, productId, price ) {
+    console.log('this is the createProductUnits func')
+    try {
+        const { rows: [order] } = await client.query(
+            `
+            INSERT INTO "productUnits"("orderId", "productId", price)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+            `,
+            [orderId, productId, price]);
+        return order;
+        
+    } catch (error) {
+        console.log('createProductUnits func failed');
+        console.error(error);
+    }
+};
+
+
+
+<<<<<<< HEAD
 // maske function to make entry in producvt units
 //orderId, product id, price
 // async function createProductUnit() {
@@ -70,14 +117,29 @@ async function createProductUnits ( orderId, productId, price ) {
 //             RETURNING *;
 //              `, [userId, status]) 
 
+=======
+// async function createOrder( { userId, status } ) {
+//     try {
+
+//         console.log('inside creatOrder');
+//         const {rows: [orders] } = await client.query(`
+//             INSERT INTO orders("userId", status)
+//             VALUES ($1, $2)
+//             RETURNING *;
+//              `, [userId, status]) 
+
+>>>>>>> 1b58598c6970750323c404c852046caf827e6489
 //              return orders;
         
 //     } catch (error) {
 //         throw error;        
 //     }
 // }
+<<<<<<< HEAD
 //get personal orders
 //update to join with users table
+=======
+>>>>>>> 1b58598c6970750323c404c852046caf827e6489
 
 async function getOrders() {
     try {
