@@ -12,9 +12,13 @@ async function dropTables() {
   try {
     await client.query(`
 
+            DROP TABLE IF EXISTS productUnits;
             DROP TABLE IF EXISTS orders;
-            DROP TABLE IF EXISTS users;
             DROP TABLE IF EXISTS products;
+            DROP TABLE IF EXISTS users;
+           
+           
+           
 
         `);
 
@@ -28,9 +32,11 @@ async function dropTables() {
 
 async function buildTables() {
   try {
+
     await client.query(`
     DROP TABLE IF EXISTS products;
     `)
+
     console.log('starting to build tables')
     await client.query(`
     CREATE TABLE products(
@@ -50,9 +56,6 @@ async function buildTables() {
 
     // build tables in correct order
 
-    await client.query(`
-    DROP TABLE IF EXISTS users;
-    `)
 
     await client.query(`
     CREATE TABLE users(
@@ -62,19 +65,23 @@ async function buildTables() {
     );
     `);
 
-
-    await client.query(`
-    DROP TABLE IF EXISTS orders;
-    `)
-
     await client.query(`
     CREATE TABLE orders(
       id SERIAL PRIMARY KEY,
       "userId" INTEGER REFERENCES users(id),
-      "productId" INTEGER REFERENCES products(id),
-      qty INTEGER
+      status VARCHAR(255) NOT NULL
     );
     `);
+
+
+    await client.query(`
+      CREATE TABLE "productUnits"(
+        id SERIAL PRIMARY KEY,
+        "orderId" INTEGER REFERENCES orders(id),
+        "productId" INTEGER REFERENCES products(id),
+        price DECIMAL NOT NULL
+      );
+    `)
 
   } catch (error) {
     console.error("error with products table")
