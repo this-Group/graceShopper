@@ -52,9 +52,9 @@ async function buildTables() {
 
     // build tables in correct order
 
-    await client.query(`
-    DROP TABLE IF EXISTS users;
-    `)
+    // await client.query(`
+    // DROP TABLE IF EXISTS users;
+    // `)
 
     await client.query(`
     CREATE TABLE users(
@@ -65,9 +65,9 @@ async function buildTables() {
     `);
 
 
-    await client.query(`
-    DROP TABLE IF EXISTS orders;
-    `)
+    // await client.query(`
+    // DROP TABLE IF EXISTS orders;
+    // `)
 
     await client.query(`
     CREATE TABLE orders(
@@ -77,9 +77,9 @@ async function buildTables() {
     );
     `);
 
-    await client.query(`
-    DROP TABLE IF EXISTS "productUnits";
-    `)
+    // await client.query(`
+    // DROP TABLE IF EXISTS "productUnits";
+    // `)
 
     await client.query(`
       CREATE TABLE "productUnits"(

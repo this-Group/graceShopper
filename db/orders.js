@@ -19,7 +19,7 @@ async function createOrder ( userId, status ) {
     }
 };
 
-async function createProductUnits ( orderId, productId, price ) {
+async function createProductUnits ( {orderId, productId, price} ) {
     console.log('this is the createProductUnits func')
     try {
         const { rows: [order] } = await client.query(
