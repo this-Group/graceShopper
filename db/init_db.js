@@ -1,7 +1,7 @@
 // code to build and initialize DB goes here
 
 const {createAlbum} = require('./albums');
-const { createUser } = require('./users');
+const { createUserForTables } = require('./users');
 const { client } = require('./client');
 
 console.log('testing');
@@ -11,13 +11,15 @@ async function dropTables() {
 
   try {
     await client.query(`
+
             DROP TABLE IF EXISTS productUnits;
             DROP TABLE IF EXISTS orders;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
            
            
-            
+           
+
         `);
 
     console.log("Finished dropping tables!");
@@ -31,9 +33,10 @@ async function dropTables() {
 async function buildTables() {
   try {
 
-    // await client.query(`
-    // DROP TABLE IF EXISTS products;
-    // `)
+    await client.query(`
+    DROP TABLE IF EXISTS products;
+    `)
+
     console.log('starting to build tables')
     await client.query(`
     CREATE TABLE products(
@@ -133,7 +136,6 @@ async function populateInitialData() {
       // {artist: '', title:'', genre: '', price: '', qty: ''},
 
 
-
     ]
     console.log(albumsToCreate);
     const albums = await Promise.all(albumsToCreate.map(createAlbum))
@@ -153,9 +155,9 @@ async function createInitialUsers() {
       { username: 'sandra', password: 'sandra123' },
       { username: 'glamgal', password: 'glamgal123' },
     ]
-    const users = await Promise.all(usersToCreate.map(createUser));
+    const users = await Promise.all(usersToCreate.map(createUserForTables));
 
-    console.log('Users created:');
+    console.log('Users created:', users);
     console.log(users);
     console.log('Finished creating users!');
   } catch (error) {
