@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "babel-preset-react": "^6.24.1",
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "react": "^16.14.0",

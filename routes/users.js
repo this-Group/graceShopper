@@ -12,32 +12,50 @@ const {
 
 //Register or Signup a user
 
-userRouter.get("/signup", async (req, res, next) => {
+
+
+userRouter.post("/signup", async (req, res, next) => {
     res.send(
         { message: 'This is the signup router'}
     )
-    // const { username, password } = req.body;
+    const { username, password } = req.body;
+    console.log("signup", username, password )
 
-    // const checkUsername = checkForUsername(username),
+    const checkUsername = await checkForUsername(username);
 
-    // if (checkUsername) {
-    //     res.status(401)
-    //     next({
-    //         name: "UsernameTakenError",
-    //         message: "The username is taken"
-    //     });
-    // } else {
+    console.log("checkUser is", checkUsername )
 
-    //     try {
-    //         const newUser = await createUser(username, password);
+    if (checkUsername) {
+        res.status(401)
+        next({
+            name: "UsernameTakenError",
+            message: "The username is taken"
+        });
+    } else {
 
-    //         res.status(200).send(newUser);
-    //     } catch (error) {
-    //         console.log('the signup post handeler failed');
-    //         return next(error);
-    //     }
-    // }
+        try {
+            const newUser = await createUser(username, password);
+            console.log("This is the new user", newUser )
+            // if(newUser){
+            //     const userToken = jwt.sign({
+            //         username,
+            //         password,
+            //         id: user.id
+            //     }, SECRET);
+
+            //     res.status(200).send( {userToken: userToken}, newUser);
+            //     localStorage.setItem('token', userToken );
+            // }
+
+            res.status(200).send( newUser );
+        } catch (error) {
+            console.log('the signup post handeler failed');
+            return next(error);
+        }
+    }
 });
+
+
 
 //Login a user 
 

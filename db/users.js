@@ -9,7 +9,7 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
-            return user
+            return user;
 
     } catch (error) {
         console.log('createUser function failed');
@@ -41,7 +41,7 @@ async function checkForUsername(username) {
         const { rows: [user] } = await client.query(`
             SELECT username 
             FROM users
-            WHERE username = $1);
+            WHERE username = $1;
         `, [username]);
 
         if(user){
@@ -52,7 +52,7 @@ async function checkForUsername(username) {
         
 
     } catch (error) {
-        console.log('getUserByUsername function failed');
+        console.log('checkForUsername function failed');
         console.error(error);
         throw error;
     }

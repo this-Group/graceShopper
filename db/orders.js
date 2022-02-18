@@ -20,17 +20,17 @@ async function createProductUnit() {
 
 
 
-async function createOrder(userId, status) {
+async function createOrder( { userId, status } ) {
     try {
 
         console.log('inside creatOrder');
-        const {rows: [myOrders] = await client.query(`
-            INSERT INTO orders(userId, status)
+        const {rows: [orders] } = await client.query(`
+            INSERT INTO orders("userId", status)
             VALUES ($1, $2)
             RETURNING *;
-             `, [userId, status]) }
+             `, [userId, status]) 
 
-             return myOrders;
+             return orders;
         
     } catch (error) {
         throw error;        
