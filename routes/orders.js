@@ -7,28 +7,14 @@ const  {
     deleteOrder,
     getOrders,
     getOrderByOrderID,
-    createProductUnit
+    getOrderByUserId,
 } = require ("../db/orders")
-// rte for create productunit- post req
-//// grab orderid, price, productid
 
-//maybe a bad job on naming the URI? should this be orders/productunits?
-ordersRouter.post('/productunits', async (req, res, next) => {
+ordersRouter.get('/', async (req, res, next) => {
     try {
-        const {orderId, productId, price} = req.body;
-
-        const productUnits = await createProductUnit(orderId, productId, price);
-        res.status(200).send(productUnits)
-    } catch (error) {
-        return next(error);
-    }
-})
-
-
-ordersRouter.get('/myorders', async (req, res, next) => {
-    try {
-        const orders = await getOrders();
-        console.log('get all orders', orders);
+        const {userId}= req.body;
+        const orders = await getOrderByUserId(userId);
+        console.log('get my orders', orders);
         res.status(200).send(orders)
     } catch (error) {
         return next(error);

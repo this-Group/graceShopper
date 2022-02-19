@@ -19,7 +19,14 @@ const {
 
 
 
-
+userRouter.get("/signup", async (req, res, next) => {
+    try {
+        console.log("signuproute working");
+        res.status(200).send({message: "this is signup"})
+    } catch (error) {
+        console.error(error);
+    }
+})
 userRouter.post("/signup", async (req, res, next) => {
     res.send(
         { message: 'This is the signup router'}
