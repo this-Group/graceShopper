@@ -1,5 +1,6 @@
 const { client } = require("./client");
-const {createOrder} = require("./orders")
+const {createOrder, userCheckForInCart} = require("./orders")
+
 
 async function createUserForTables( {username, password} ) {
     try {
@@ -31,8 +32,12 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
-            // const newOrder = createOrder( user.id, 'In Cart' );
-            // console.log("Create order function at createUser func", newOrder )
+        const cartStatus = 'In Cart'
+
+        console.log("this is the user", user)
+
+        const newOrder = await createOrder( user.id, cartStatus );
+        console.log("Create order function at createUser func", newOrder )
 
             return user;
         
@@ -59,11 +64,17 @@ async function loginUser( username, password ) {
 
         console.log("this is user from login func", user)
 
-        const cartStatus = 'In Cart'
+        const cartStatus = "In Cart"
 
-        const newOrder = await createOrder( user.id, cartStatus );
-        console.log("Create order function at createUser func", newOrder )
-        
+        const inCartCheck = await userCheckForInCart(user.id, cartStatus )
+
+        console.log("inCartCheck is", inCartCheck)
+
+        if (inCartCheck == false){
+            const newOrder = await createOrder( user.id, cartStatus );
+            console.log("Create order function at createUser func", newOrder )
+
+        }
 
         if (!user) return null; 
 
