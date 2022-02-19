@@ -42,6 +42,7 @@ async function createUser( username, password ) {
             return user;
         
 
+
     } catch (error) {
         console.log('createUser function failed');
         console.error(error);
@@ -111,7 +112,7 @@ async function checkForUsername(username) {
         
 
     } catch (error) {
-        console.log('getUserByUsername function failed');
+        console.log('checkForUsername function failed');
         console.error(error);
         throw error;
     }
