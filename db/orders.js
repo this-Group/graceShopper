@@ -37,4 +37,30 @@ async function createProductUnits ( {orderId, productId, price} ) {
     }
 };
 
-module.exports =  {createOrder, createProductUnits};
+async function userCheckForInCart ( userId, status ) {
+    console.log("Running UserOrderCheck func");
+    try{
+        const { rows: [order] } = await client.query(`
+            SELECT *
+            FROM orders
+            WHERE "userId" = $1 AND status = $2
+            ;
+        `, [userId, status]);
+
+        console.log("Status from userCheckForInCart", order)
+
+        if(order){
+            console.log("userCheckForIntCart is:", true )
+            return true
+        } else{
+            console.log("userCheckForIntCart is:", false )
+            return false
+        }
+
+    } catch (error){
+        console.log('userOrderCheck func failed');
+        console.error(error);
+    }
+}
+
+module.exports =  {createOrder, createProductUnits, userCheckForInCart};
