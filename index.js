@@ -2,6 +2,9 @@
 const express = require('express');
 const server = express();
 
+const bodyParser = require('body-parser');
+server.use(bodyParser.urlencoded({extended: false}));
+
 server.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");

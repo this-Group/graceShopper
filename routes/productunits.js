@@ -1,10 +1,23 @@
 const express = require( 'express');
 
-const productUnitsRouter = express.Routerd();
+const productUnitsRouter = express.Router();
 
-const { createProductUnits } = require("../db/orders")
+const { createProductUnits, getProductUnits } = require("../db/orders")
 
-productUnitsRouter.post('/productunits', async (req, res, next) => {
+productUnitsRouter.get("/", async (req, res, next) => {
+    try {
+        console.log('checking productunits')
+        const productUnits = await getProductUnits();
+        // req.body;
+        
+        res.send(productUnits);
+        console.log("API is Healthy!")
+    } catch (error) {
+        return next(error);
+    }
+})
+
+productUnitsRouter.post('/', async (req, res, next) => {
     try {
         const {orderId, productId, price} = req.body;
 

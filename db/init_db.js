@@ -223,10 +223,7 @@ async function rebuildDB() {
     await populateInitialData();
     await createInitialUsers();
     await createInitialOrders();
-<<<<<<< HEAD
-=======
     await createInitialProductUnits();
->>>>>>> 1b58598c6970750323c404c852046caf827e6489
     
   } catch (error) {
     console.log("Error during rebuildDB");

@@ -38,49 +38,54 @@ async function createProductUnits ( orderId, productId, price ) {
     }
 };
 
-
-
-const { client } = require("./client");
-
-const { client } = require ('./client');
-
-
-async function createOrder ( userId, status ) {
-    console.log('this is the createOrders func')
-    try {
-        const { rows: [order] } = await client.query(
-            `
-            INSERT INTO orders("userId", status)
-            VALUES ($1, $2)
-            RETURNING *;
-            `,
-            [userId, status]);
-        return order;
+// async function createOrder ( {userId, status} ) {
+//     console.log('this is the createOrders func')
+//     try {
+//         const { rows: [order] } = await client.query(
+//             `
+//             INSERT INTO orders("userId", status)
+//             VALUES ($1, $2)
+//             RETURNING *;
+//             `,
+//             [userId, status]);
+//             console.log('creatorders successful')
+//         return order;
         
-    } catch (error) {
-        console.log('createOrder func failed');
-        console.error(error);
-    }
-};
+//     } catch (error) {
+//         console.log('createOrder func failed');
+//         console.error(error);
+//     }
+// };
 
-async function createProductUnits ( orderId, productId, price ) {
-    console.log('this is the createProductUnits func')
-    try {
-        const { rows: [order] } = await client.query(
-            `
-            INSERT INTO "productUnits"("orderId", "productId", price)
-            VALUES ($1, $2, $3)
-            RETURNING *;
-            `,
-            [orderId, productId, price]);
-        return order;
+// async function createProductUnits ( {orderId, productId, price} ) {
+//     console.log('this is the createProductUnits func')
+//     try {
+//         const { rows: [order] } = await client.query(
+//             `
+//             INSERT INTO "productUnits"("orderId", "productId", price)
+//             VALUES ($1, $2, $3)
+//             RETURNING *;
+//             `,
+//             [orderId, productId, price]);
+//         return order;
         
-    } catch (error) {
-        console.log('createProductUnits func failed');
-        console.error(error);
-    }
-};
+//     } catch (error) {
+//         console.log('createProductUnits func failed');
+//         console.error(error);
+//     }
+// };
 
+async function getProductUnits() {
+    try {
+        const { rows: productUnits} = await client.query(`
+        SELECT *
+        FROM "productUnits"
+        `);
+        return productUnits;
+    } catch (error) {
+        throw error;
+    }
+}
 
 
 // maske function to make entry in producvt units
@@ -173,13 +178,31 @@ async function getOrderByUserId (userId) {
             ON (users.id = orders."userId")
         JOIN products
             ON (products.id = "productUnits"."productId")
-        WHERE "userId".id = ${userId};
+        WHERE orders.id = ${userId};
         `);
         return rows;
     } catch (error) {
         console.error(error);
     }
 }
+// async function getOrderByUserId (userId) {
+//     try {
+//         const {rows} = await client.query(`
+//         SELECT orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture
+//         FROM "productUnits"
+//         JOIN orders
+//             ON orders.id = "productUnits"."orderId"
+//         JOIN users
+//             ON users.id = orders."userId"
+//         JOIN products
+//             ON products.id = "productUnits"."productId"
+//         WHERE "userId".id = ${userId};
+//         `);
+//         return rows;
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
 
 async function deleteOrder(){
@@ -201,5 +224,6 @@ module.exports = {
     deleteOrder, 
     getOrderByOrderID,
     getOrderByUserId,
+    getProductUnits,
     getOrders
 };
