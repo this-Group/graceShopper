@@ -61,6 +61,8 @@ async function userCheckForInCart ( userId, status ) {
 
     } catch (error){
         console.log('userOrderCheck func failed');
+    }
+}
 
 
 // async function createProductUnits ( {orderId, productId, price} ) {

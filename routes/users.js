@@ -53,8 +53,11 @@ userRouter.post("/signup", async (req, res, next) => {
         //     res.status(200).send( {userToken: userToken}, newUser);
         //     localStorage.setItem('token', userToken );
         // }
-
-        res.status(200).send( newUser );
+        console.log("directly before sending response")
+        console.log("this is new use var", newUser)
+        // const theUser = await newUser.json()
+        res.send(newUser)
+        // res.status(200).send( newUser );
     } catch (error) {
         console.log('the signup post handeler failed');
         return next(error);

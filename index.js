@@ -1,10 +1,11 @@
 // This is the Web Server
 const express = require('express');
 const server = express();
+// here's our static files
+const path = require('path');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
-
-const bodyParser = require('body-parser');
-server.use(bodyParser.urlencoded({extended: false}));
+const { client } = require('./db/client');
 
 server.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,29 +16,29 @@ server.use(function(req, res, next) {
   next(); 
 })
 
-// create logs for everything
-const morgan = require('morgan');
 server.use(morgan('dev'));
 
-// handle application/json requests
 server.use(express.json());
 
-// here's our static files
-const path = require('path');
+server.use(bodyParser.urlencoded({extended: false}));
+
 server.use(express.static(path.join(__dirname, 'build')));
 
-server.use(bodyParser.urlencoded({ extended : false })); 
-
-// here's our API
 server.use('/api', require('./routes'));
 
-// by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 });
 
+
+// here's our API
+
+
+// by default serve up the react app if we don't recognize the route
+
+
 // bring in the DB connection
-const { client } = require('./db/client');
+
 
 
 
