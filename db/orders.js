@@ -2,10 +2,10 @@
 const { client } = require ('./client');
 
 
-async function createOrder ( userId, status ) {
+async function createOrder ({ userId, status }) {
     console.log('this is the createOrders func')
     try {
-        const { rows: [order] } = await client.query(
+        const { rows: order } = await client.query(
             `
             INSERT INTO orders("userId", status)
             VALUES ($1, $2)
