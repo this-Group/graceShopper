@@ -2,14 +2,10 @@
 const express = require('express');
 
 var cors = require('cors')
-
+ 
 const server = express();
+server.use(express.urlencoded({extended:true}))
 const bodyParser = require('body-parser');
-
-
-
-const bodyParser = require('body-parser');
-server.use(bodyParser.urlencoded({extended: false}));
 
 server.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -23,8 +19,8 @@ server.use(function(req, res, next) {
 const morgan = require('morgan');
 server.use(morgan('dev'));
 
-server.use(cors())
-server.options('*', cors())
+server.use(cors({origin:"*"}))
+//server.options('*', cors())
 
 // handle application/json requests
 server.use(express.json());
@@ -33,7 +29,7 @@ server.use(express.json());
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
-server.use(bodyParser.urlencoded({ extended : false })); 
+
 
 // here's our API
 server.use('/api', require('./routes'));
