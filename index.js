@@ -1,23 +1,30 @@
 // This is the Web Server
 const express = require('express');
+
+var cors = require('cors')
+
 const server = express();
 const bodyParser = require('body-parser');
+
+
 
 const bodyParser = require('body-parser');
 server.use(bodyParser.urlencoded({extended: false}));
 
 server.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.setHeader("Access-Control-Allow-Credentials", false);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "*");
 
-  next(); 
-})
+  next();
+});
 
 // create logs for everything
 const morgan = require('morgan');
 server.use(morgan('dev'));
+
+server.use(cors())
+server.options('*', cors())
 
 // handle application/json requests
 server.use(express.json());
