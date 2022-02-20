@@ -1,8 +1,12 @@
 const express = require( 'express');
+const { 
+    createProductUnits,
+    getProductUnits,
+    deleteProductUnits,
+ } = require ('../db/productunits')
 
 const productUnitsRouter = express.Router();
 
-const { createProductUnits, getProductUnits } = require("../db/orders")
 
 productUnitsRouter.get("/", async (req, res, next) => {
     try {
@@ -23,6 +27,17 @@ productUnitsRouter.post('/', async (req, res, next) => {
 
         const productUnits = await createProductUnits(orderId, productId, price);
         res.status(200).send(productUnits)
+    } catch (error) {
+        return next(error);
+    }
+})
+
+productUnitsRouter.delete('/:id', async (req, res, next) => {
+    try {
+        const  id  = req.params
+        const deleteProductUnits = await deleteProductUnits(id);
+
+        res.send(deleteProductUnits);
     } catch (error) {
         return next(error);
     }

@@ -10,7 +10,7 @@ const  {
     getOrderByUserId,
 } = require ("../db/orders")
 
-ordersRouter.get('/', async (req, res, next) => {
+ordersRouter.get('/myorders', async (req, res, next) => {
     try {
         const {userId}= req.body;
         const orders = await getOrderByUserId(userId);

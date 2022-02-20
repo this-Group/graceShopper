@@ -20,23 +20,25 @@ async function createOrder ( userId, status ) {
     }
 };
 
-async function createProductUnits ( orderId, productId, price ) {
-    console.log('this is the createProductUnits func')
-    try {
-        const { rows: [order] } = await client.query(
-            `
-            INSERT INTO "productUnits"("orderId", "productId", price)
-            VALUES ($1, $2, $3)
-            RETURNING *;
-            `,
-            [orderId, productId, price]);
-        return order;
+//moved to productunits.js
+
+// async function createProductUnits ( orderId, productId, price ) {
+//     console.log('this is the createProductUnits func')
+//     try {
+//         const { rows: [order] } = await client.query(
+//             `
+//             INSERT INTO "productUnits"("orderId", "productId", price)
+//             VALUES ($1, $2, $3)
+//             RETURNING *;
+//             `,
+//             [orderId, productId, price]);
+//         return order;
         
-    } catch (error) {
-        console.log('createProductUnits func failed');
-        console.error(error);
-    }
-};
+//     } catch (error) {
+//         console.log('createProductUnits func failed');
+//         console.error(error);
+//     }
+// };
 
 // async function createOrder ( {userId, status} ) {
 //     console.log('this is the createOrders func')
@@ -57,6 +59,9 @@ async function createProductUnits ( orderId, productId, price ) {
 //     }
 // };
 
+//moved go productunits.js
+
+
 // async function createProductUnits ( {orderId, productId, price} ) {
 //     console.log('this is the createProductUnits func')
 //     try {
@@ -75,17 +80,18 @@ async function createProductUnits ( orderId, productId, price ) {
 //     }
 // };
 
-async function getProductUnits() {
-    try {
-        const { rows: productUnits} = await client.query(`
-        SELECT *
-        FROM "productUnits"
-        `);
-        return productUnits;
-    } catch (error) {
-        throw error;
-    }
-}
+//moved to productunits.js
+// async function getProductUnits() {
+//     try {
+//         const { rows: productUnits} = await client.query(`
+//         SELECT *
+//         FROM "productUnits"
+//         `);
+//         return productUnits;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 
 
 // maske function to make entry in producvt units
@@ -220,10 +226,10 @@ async function deleteOrder(){
 
 module.exports = {
     createOrder,
-    createProductUnits,
+    // createProductUnits,
     deleteOrder, 
     getOrderByOrderID,
     getOrderByUserId,
-    getProductUnits,
+    // getProductUnits,
     getOrders
 };
