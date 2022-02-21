@@ -33,14 +33,15 @@ productUnitsRouter.post('/', async (req, res, next) => {
 })
 
 productUnitsRouter.delete('/:id', async (req, res, next) => {
+    const  {id}  = req.params;
     try {
-        const  id  = req.params
-        const deleteProductUnits = await deleteProductUnits(id);
+        
+        const deletedProductUnits = await deleteProductUnits(id);
 
-        res.send(deleteProductUnits);
+        res.send(deletedProductUnits);
     } catch (error) {
         return next(error);
     }
-})
+});
 
 module.exports = productUnitsRouter;

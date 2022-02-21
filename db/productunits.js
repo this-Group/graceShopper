@@ -33,7 +33,7 @@ async function createProductUnits ( orderId, productId, price ) {
 async function deleteProductUnits(id) {
     try {
         const {rows} = await client.query(`
-            DELETE FROM productUnits
+            DELETE FROM "productUnits"
             WHERE id = $1
             RETURNING *;
         `, [id])
