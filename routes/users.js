@@ -29,9 +29,9 @@ userRouter.get("/signup", async (req, res, next) => {
     }
 })
 userRouter.post("/signup", async (req, res, next) => {
-    res.send(
-        { message: 'This is the signup router'}
-    )
+    // res.send(
+    //     { message: 'This is the signup router'}
+    // )
 
     const { username, password } = req.body;
     console.log("signup", username, password )
@@ -129,7 +129,7 @@ userRouter.post("/login", async (req, res, next) => {
             //     // localStorage.setItem('token', userToken );
             // }
 
-            res.status(200).send( user );
+            res.status(200).send( {oderId: user.id, userId: user.userId} );
 
             
         } catch (error) {
