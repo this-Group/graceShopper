@@ -2,7 +2,8 @@
 
 const {createAlbum} = require('./albums');
 const { createUserForTables } = require('./users');
-const { createOrder, createProductUnits } =require('./orders')
+const { createOrderForTables } =require('./orders')
+const { createProductUnitsForTables} = require('./productunits')
 const { client } = require('./client');
 
 console.log('testing');
@@ -190,7 +191,7 @@ async function createInitialOrders() {
       {userId: 2, status: "In Cart"},
       {userId: 3, status: "In Cart"},
     ]
-    const orders = await Promise.all(ordersToCreate.map(createOrder));
+    const orders = await Promise.all(ordersToCreate.map(createOrderForTables));
 
     console.log('Orders created:');
     console.log(orders);
@@ -211,7 +212,7 @@ async function createInitialProductUnits() {
       {orderId: 2, productId: 5, price: 20.00},
       {orderId: 3, productId: 31, price: 30.00},
     ]
-    const productUnits = await Promise.all(pruductUnitsToCreate.map(createProductUnits));
+    const productUnits = await Promise.all(pruductUnitsToCreate.map(createProductUnitsForTables));
 
     console.log('ProductUnits created:');
     console.log(productUnits);

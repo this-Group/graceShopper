@@ -1,5 +1,6 @@
 // This is the Web Server
 const express = require('express');
+const {client} = require('./db/client')
 
 var cors = require('cors')
  
@@ -18,7 +19,7 @@ server.use(function(req, res, next) {
   next();
 });
 
-
+const morgan= require('morgan')
 server.use(morgan('dev'));
 
 
@@ -32,7 +33,7 @@ server.use(express.json());
 server.use(bodyParser.urlencoded({extended: false}));
 
 
-server.use(express.static(path.join(__dirname, 'build')));
+// server.use(express.static(path.join(__dirname, 'build')));
 
 
 server.use('/api', require('./routes'));

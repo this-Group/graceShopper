@@ -2,7 +2,26 @@
 const { client } = require ('./client');
 
 
-async function createOrder ( userId, status ) {
+async function createOrder ({ userId, status }) {
+    console.log('this is the createOrder func')
+    console.log('this is userId and status from create order', userId, status)
+    try {
+        const { rows: [order] } = await client.query(
+            `
+            INSERT INTO orders("userId", status)
+            VALUES ($1, $2)
+            RETURNING *;
+            `,
+            [userId, status]);
+        return order;
+        
+    } catch (error) {
+        console.log('createOrder func failed');
+        console.error(error);
+    }
+};
+
+async function createOrderForTables ({ userId, status }) {
     console.log('this is the createOrder func')
     console.log('this is userId and status from create order', userId, status)
     try {
@@ -39,17 +58,17 @@ async function createOrder ( userId, status ) {
 
 
 
-async function createProductUnits ( {orderId, productId, price} ) {
-    console.log('this is the createProductUnits func')
-    try {
-        const { rows: [order] } = await client.query(
-            `
-            INSERT INTO "productUnits"("orderId", "productId", price)
-            VALUES ($1, $2, $3)
-            RETURNING *;
-            `,
-            [orderId, productId, price]);
-        return order;
+// async function createProductUnits ( {orderId, productId, price} ) {
+//     console.log('this is the createProductUnits func')
+//     try {
+//         const { rows: [order] } = await client.query(
+//             `
+//             INSERT INTO "productUnits"("orderId", "productId", price)
+//             VALUES ($1, $2, $3)
+//             RETURNING *;
+//             `,
+//             [orderId, productId, price]);
+//         return order;
 
      
 //     } catch (error) {
@@ -262,6 +281,6 @@ module.exports = {
     getOrderByOrderID,
     getOrderByUserId,
     // getProductUnits,
-    getOrders
+    getOrders,
+    createOrderForTables
 };
-
