@@ -2,7 +2,7 @@
 const { client } = require ('./client');
 
 
-async function createOrder ({ userId, status }) {
+async function createOrder ( userId, status ) {
     console.log('this is the createOrder func')
     console.log('this is userId and status from create order', userId, status)
     try {
