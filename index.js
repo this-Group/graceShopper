@@ -4,6 +4,7 @@ const express = require('express');
 var cors = require('cors')
  
 const server = express();
+
 server.use(express.urlencoded({extended:true}))
 const bodyParser = require('body-parser');
 
@@ -14,6 +15,7 @@ server.use(function(req, res, next) {
 
   next();
 });
+
 
 // create logs for everything
 const morgan = require('morgan');
@@ -28,7 +30,6 @@ server.use(express.json());
 // here's our static files
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
-
 
 
 // here's our API

@@ -29,10 +29,13 @@ userRouter.get("/signup", async (req, res, next) => {
 })
 userRouter.post("/signup", async (req, res, next) => {
 
+
     
 
     const { username, password } = req.body;
     console.log(req.body)
+    console.log("signup", username, password )
+
 
     // const checkUsername = await checkForUsername(username);
 
@@ -41,6 +44,7 @@ userRouter.post("/signup", async (req, res, next) => {
     try {
         const newUser = await createUser( username, password );
         console.log("This is the new user", newUser )
+
         if(newUser){
             const userToken = jwt.sign({
                 username,
@@ -54,7 +58,9 @@ userRouter.post("/signup", async (req, res, next) => {
 
        
     } catch (error) {
+        console.log('the signup post handeler failed');
         res.status(401).send("cannot create user");
+
         return next(error);
     }
 
@@ -91,11 +97,13 @@ userRouter.post("/signup", async (req, res, next) => {
 
 //Login a user 
 
+
 userRouter.post("/login", async (req, res) => {
     
     // res.send(
         console.log("....")
     
+
     const { username, password } = req.body;
     console.log("login", username, password )
 
@@ -104,8 +112,10 @@ userRouter.post("/login", async (req, res) => {
     console.log('User exists', checkUsername)
 
     if (!checkUsername) {
+
         res.status(401).
         send({
+
             name: "UsernameError",
             message: "Invalid User"
         });
@@ -114,6 +124,7 @@ userRouter.post("/login", async (req, res) => {
         try {
             const  user = await loginUser(username, password);
             console.log('This is the user data from login', user);
+
             if(user){
                 const userToken = jwt.sign({
                     username,
@@ -124,6 +135,7 @@ userRouter.post("/login", async (req, res) => {
                 // localStorage.setItem('token', userToken );
             }
             
+
 
             
         } catch (error) {
@@ -159,3 +171,4 @@ userRouter.post("/login", async (req, res) => {
 // }) 
 
 module.exports = userRouter;
+

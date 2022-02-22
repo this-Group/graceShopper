@@ -5,9 +5,27 @@ import AllRecordsView from './AllRecordsView';
 import {
   getSomething,
   getAllProducts
+
 } from '../api';
 
 
+
+
+const App = () => {
+    console.log('hello from App')
+  const [message, setMessage] = useState('');
+
+  // useEffect(() => {
+  //   getSomething()
+  //     .then(response => {
+  //       setMessage(response.message);
+  //     })
+  //     .catch(error => {
+  //       setMessage(error.message);
+  //     });
+  // });
+
+  //---------------------------------------------------------
 
 
 const App = () => {
@@ -47,6 +65,7 @@ const App = () => {
 
       {/* <Route path="/Activities" component={Activities} />
       <AllRecordsView records={records}/> */}
+
     </div>
   );
 }

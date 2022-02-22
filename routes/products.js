@@ -10,9 +10,10 @@ const {
  //GET ALL PRODUCTS
 
 productsRouter.get("/", async (req, res, next) => {
+  
   try {
     const products = await getAllProducts();
-
+    console.log('these are products', products)
     res.status(200).send(products);
   } catch (error) {
     return next(error);

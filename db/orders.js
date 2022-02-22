@@ -1,3 +1,4 @@
+
 const { client } = require ('./client');
 
 
@@ -62,6 +63,7 @@ async function userCheckForInCart ( userId, status ) {
         console.log('userOrderCheck func failed');
     }
 };
+
 
 
 // async function createProductUnits ( {orderId, productId, price} ) {
@@ -237,3 +239,4 @@ module.exports = {
     getProductUnits,
     getOrders
 };
+
