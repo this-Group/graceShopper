@@ -36,10 +36,10 @@ async function createUser( username, password ) {
 
         console.log("this is the user", user)
 
-        const newOrder = await createOrder( user.id, cartStatus );
-        console.log("Create order function at createUser func", newOrder )
+        const order = await createOrder( user.id, cartStatus );
+        console.log("Create order function at createUser func", order )
 
-            return user;
+            return { orderId: order.id, userId: user.id}
         
 
 
@@ -60,7 +60,16 @@ async function loginUser( username, password ) {
             LIMIT 1;
         `, [username, password]);
 
+        
+
         const user = rows[0]
+
+        // const { rows: order } = await client.query(`
+        //     SELECT * 
+        //     FROM orders
+        //     WHERE 
+        //     ;
+        // `, [username, password]);
 
         console.log("this is user from login func", user)
 
@@ -71,9 +80,11 @@ async function loginUser( username, password ) {
         console.log("inCartCheck is", inCartCheck)
 
         if (inCartCheck == false){
-            const newOrder = await createOrder( user.id, cartStatus );
-            console.log("Create order function at createUser func", newOrder )
-
+            const order = await createOrder( user.id, cartStatus );
+            console.log("Create order function at createUser func", order )
+            return user, order
+        } else{
+            return user, inCartCheck;
         }
 
         if (!user) return null; 

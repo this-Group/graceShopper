@@ -29,8 +29,10 @@ userRouter.get("/signup", async (req, res, next) => {
 })
 userRouter.post("/signup", async (req, res, next) => {
 
+    // res.send(
+    //     { message: 'This is the signup router'}
+    // )
 
-    
 
     const { username, password } = req.body;
     console.log(req.body)
@@ -45,6 +47,13 @@ userRouter.post("/signup", async (req, res, next) => {
         const newUser = await createUser( username, password );
         console.log("This is the new user", newUser )
 
+        console.log("directly before sending response")
+        console.log("this is new use var", newUser)
+        // const theUser = await newUser.json()
+//         res.send(newUser)
+        // res.status(200).send( newUser );
+
+
         if(newUser){
             const userToken = jwt.sign({
                 username,
@@ -52,11 +61,12 @@ userRouter.post("/signup", async (req, res, next) => {
                 id: newUser.id
             }, SECRET);
 
-            res.status(200).json({token:userToken, user:newUser});
-           /// localStorage.setItem('token', userToken );
+            res.status(200).json(newUser, {token:userToken, user:newUser});
+           /// localStorage.setItem(newUser,'token', userToken );
         }
 
        
+
     } catch (error) {
         console.log('the signup post handeler failed');
         res.status(401).send("cannot create user");
@@ -125,16 +135,22 @@ userRouter.post("/login", async (req, res) => {
             const  user = await loginUser(username, password);
             console.log('This is the user data from login', user);
 
+       
+
+//             res.status(200).send( {oderId: user.id, userId: user.userId} );
+
+
             if(user){
                 const userToken = jwt.sign({
                     username,
                     password,
                     id: user.id
                 }, SECRET);
-                res.status(200).send({user:user, token : userToken} );
+                res.status(200).send({oderId: user.id, userId: user.userId}, {user:user, token : userToken} );
                 // localStorage.setItem('token', userToken );
             }
             
+
 
 
             

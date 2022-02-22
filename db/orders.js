@@ -3,7 +3,8 @@ const { client } = require ('./client');
 
 
 async function createOrder ( userId, status ) {
-    console.log('this is the createOrders func')
+    console.log('this is the createOrder func')
+    console.log('this is userId and status from create order', userId, status)
     try {
         const { rows: [order] } = await client.query(
             `
@@ -19,6 +20,9 @@ async function createOrder ( userId, status ) {
         console.error(error);
     }
 };
+
+
+
 
 async function createProductUnits ( {orderId, productId, price} ) {
     console.log('this is the createProductUnits func')
@@ -53,7 +57,7 @@ async function userCheckForInCart ( userId, status ) {
 
         if(order){
             console.log("userCheckForIntCart is:", true )
-            return true
+            return order
         } else{
             console.log("userCheckForIntCart is:", false )
             return false
@@ -62,7 +66,9 @@ async function userCheckForInCart ( userId, status ) {
     } catch (error){
         console.log('userOrderCheck func failed');
     }
+
 };
+
 
 
 
