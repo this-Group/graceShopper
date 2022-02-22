@@ -1,5 +1,6 @@
 const { client } = require("./client");
-const {createOrder} = require("./orders")
+const {createOrder, userCheckForInCart} = require("./orders")
+
 
 async function createUserForTables( {username, password} ) {
     try {
@@ -16,12 +17,13 @@ async function createUserForTables( {username, password} ) {
         
 
     } catch (error) {
-        console.log('createUser function failed');
+        console.log('createUser For Tables function failed');
         console.error(error);
         throw error;
     }
 }
 async function createUser( username, password ) {
+    console.log("username and password", username, password)
     try {
         const { rows: [user] } = await client.query(`
             INSERT INTO users(username, password)
@@ -30,10 +32,14 @@ async function createUser( username, password ) {
             RETURNING *;
             `, [username, password]);
 
-            const newOrder = createOrder( user.id, 'In Cart' );
-            console.log("Create order function at createUser func", newOrder )
+        const cartStatus = 'In Cart'
 
-            return user;
+        console.log("this is the user", user)
+
+        const order = await createOrder( user.id, cartStatus );
+        console.log("Create order function at createUser func", order )
+
+            return { orderId: order.id, userId: user.id}
         
 
 
@@ -54,13 +60,32 @@ async function loginUser( username, password ) {
             LIMIT 1;
         `, [username, password]);
 
+        
+
         const user = rows[0]
+
+        // const { rows: order } = await client.query(`
+        //     SELECT * 
+        //     FROM orders
+        //     WHERE 
+        //     ;
+        // `, [username, password]);
 
         console.log("this is user from login func", user)
 
-        const newOrder = createOrder( user.id, 'In Cart' );
-        console.log("Create order function at createUser func", newOrder )
-        
+        const cartStatus = "In Cart"
+
+        const inCartCheck = await userCheckForInCart(user.id, cartStatus )
+
+        console.log("inCartCheck is", inCartCheck)
+
+        if (inCartCheck == false){
+            const order = await createOrder( user.id, cartStatus );
+            console.log("Create order function at createUser func", order )
+            return user, order
+        } else{
+            return user, inCartCheck;
+        }
 
         if (!user) return null; 
 

@@ -3,7 +3,8 @@ const { client } = require ('./client');
 
 
 async function createOrder ( userId, status ) {
-    console.log('this is the createOrders func')
+    console.log('this is the createOrder func')
+    console.log('this is userId and status from create order', userId, status)
     try {
         const { rows: [order] } = await client.query(
             `
@@ -20,6 +21,7 @@ async function createOrder ( userId, status ) {
     }
 };
 
+
 //moved to productunits.js
 
 // async function createProductUnits ( orderId, productId, price ) {
@@ -33,31 +35,58 @@ async function createOrder ( userId, status ) {
 //             `,
 //             [orderId, productId, price]);
 //         return order;
-        
+
+
+
+
+async function createProductUnits ( {orderId, productId, price} ) {
+    console.log('this is the createProductUnits func')
+    try {
+        const { rows: [order] } = await client.query(
+            `
+            INSERT INTO "productUnits"("orderId", "productId", price)
+            VALUES ($1, $2, $3)
+            RETURNING *;
+            `,
+            [orderId, productId, price]);
+        return order;
+
+     
 //     } catch (error) {
 //         console.log('createProductUnits func failed');
 //         console.error(error);
 //     }
 // };
 
-// async function createOrder ( {userId, status} ) {
-//     console.log('this is the createOrders func')
-//     try {
-//         const { rows: [order] } = await client.query(
-//             `
-//             INSERT INTO orders("userId", status)
-//             VALUES ($1, $2)
-//             RETURNING *;
-//             `,
-//             [userId, status]);
-//             console.log('creatorders successful')
-//         return order;
-        
-//     } catch (error) {
-//         console.log('createOrder func failed');
-//         console.error(error);
-//     }
-// };
+
+async function userCheckForInCart ( userId, status ) {
+    console.log("Running UserOrderCheck func");
+    try{
+        const { rows: [order] } = await client.query(`
+            SELECT *
+            FROM orders
+            WHERE "userId" = $1 AND status = $2
+            ;
+        `, [userId, status]);
+
+        console.log("Status from userCheckForInCart", order)
+
+        if(order){
+            console.log("userCheckForIntCart is:", true )
+            return order
+        } else{
+            console.log("userCheckForIntCart is:", false )
+            return false
+        }
+
+    } catch (error){
+        console.log('userOrderCheck func failed');
+    }
+
+};
+
+
+
 
 //moved go productunits.js
 
@@ -169,9 +198,11 @@ async function getOrderByOrderID (orderId) {
         `);
         return rows;
     } catch (error) {
+
         console.error(error);
     }
 }
+
 
 async function getOrderByUserId (userId) {
     try {
@@ -226,10 +257,11 @@ async function deleteOrder(){
 
 module.exports = {
     createOrder,
-    // createProductUnits,
+    userCheckForInCart,
     deleteOrder, 
     getOrderByOrderID,
     getOrderByUserId,
     // getProductUnits,
     getOrders
 };
+

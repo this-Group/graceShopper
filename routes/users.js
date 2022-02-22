@@ -1,18 +1,19 @@
-
 const express = require('express');
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
+const createUser = require("../db/users").createUser;
 
-const SECRET = process.env.SECRET;
-
+const SECRET = "eufgb8quwctbqwt";
 const userRouter = express.Router();
 
 const {
-    createUser,
+    // createUser,
     loginUser,
-    checkForUsername
+    checkForUsername,
+    // createUserForTables
     // getUserByUsername
 } = require("../db/users")
+
 
 //Register or Signup a user
 
@@ -27,55 +28,92 @@ userRouter.get("/signup", async (req, res, next) => {
     }
 })
 userRouter.post("/signup", async (req, res, next) => {
-    res.send(
-        { message: 'This is the signup router'}
-    )
+
+    // res.send(
+    //     { message: 'This is the signup router'}
+    // )
+
 
     const { username, password } = req.body;
+    console.log(req.body)
     console.log("signup", username, password )
 
-    const checkUsername = await checkForUsername(username);
 
-    console.log("checkUser is", checkUsername )
+    // const checkUsername = await checkForUsername(username);
 
-    if (checkUsername) {
-        res.status(401)
-        next({
-            name: "UsernameTakenError",
-            message: "The username is taken"
-        });
-    } else {
+    // console.log("checkUser is", checkUsername )
 
-        try {
-            const newUser = await createUser(username, password);
-            console.log("This is the new user", newUser )
-            // if(newUser){
-            //     const userToken = jwt.sign({
-            //         username,
-            //         password,
-            //         id: user.id
-            //     }, SECRET);
+    try {
+        const newUser = await createUser( username, password );
+        console.log("This is the new user", newUser )
 
-            //     res.status(200).send( {userToken: userToken}, newUser);
-            //     localStorage.setItem('token', userToken );
-            // }
+        console.log("directly before sending response")
+        console.log("this is new use var", newUser)
+        // const theUser = await newUser.json()
+//         res.send(newUser)
+        // res.status(200).send( newUser );
 
-            res.status(200).send( newUser );
-        } catch (error) {
-            console.log('the signup post handeler failed');
-            return next(error);
+
+        if(newUser){
+            const userToken = jwt.sign({
+                username,
+                password,
+                id: newUser.id
+            }, SECRET);
+
+            res.status(200).json(newUser, {token:userToken, user:newUser});
+           /// localStorage.setItem(newUser,'token', userToken );
         }
+
+       
+
+    } catch (error) {
+        console.log('the signup post handeler failed');
+        res.status(401).send("cannot create user");
+
+        return next(error);
     }
+
+    // if (checkUsername) {
+    //     res.status(401)
+    //     next({
+    //         name: "UsernameTakenError",
+    //         message: "The username is taken"
+    //     });
+    // } else {
+
+    //     try {
+    //         const newUser = await createUserForTables(username, password);
+    //         console.log("This is the new user", newUser )
+    //         // if(newUser){
+    //         //     const userToken = jwt.sign({
+    //         //         username,
+    //         //         password,
+    //         //         id: user.id
+    //         //     }, SECRET);
+
+    //         //     res.status(200).send( {userToken: userToken}, newUser);
+    //         //     localStorage.setItem('token', userToken );
+    //         // }
+
+    //         res.status(200).send( newUser );
+    //     } catch (error) {
+    //         console.log('the signup post handeler failed');
+    //         return next(error);
+    //     }
+    // }
 });
 
 
 //Login a user 
 
-userRouter.post("/login", async (req, res, next) => {
+
+userRouter.post("/login", async (req, res) => {
     
     // res.send(
-    //     { message: 'This is the login router'}
-    // )
+        console.log("....")
+    
+
     const { username, password } = req.body;
     console.log("login", username, password )
 
@@ -84,8 +122,10 @@ userRouter.post("/login", async (req, res, next) => {
     console.log('User exists', checkUsername)
 
     if (!checkUsername) {
-        res.status(401)
-        next({
+
+        res.status(401).
+        send({
+
             name: "UsernameError",
             message: "Invalid User"
         });
@@ -94,17 +134,24 @@ userRouter.post("/login", async (req, res, next) => {
         try {
             const  user = await loginUser(username, password);
             console.log('This is the user data from login', user);
-            // if(user){
-            //     const userToken = jwt.sign({
-            //         username,
-            //         password,
-            //         id: user.id
-            //     }, SECRET);
-            //     res.status(200).send( {userToken: userToken}, user);
-            //     // localStorage.setItem('token', userToken );
-            // }
 
-            res.status(200).send( user );
+       
+
+//             res.status(200).send( {oderId: user.id, userId: user.userId} );
+
+
+            if(user){
+                const userToken = jwt.sign({
+                    username,
+                    password,
+                    id: user.id
+                }, SECRET);
+                res.status(200).send({oderId: user.id, userId: user.userId}, {user:user, token : userToken} );
+                // localStorage.setItem('token', userToken );
+            }
+            
+
+
 
             
         } catch (error) {

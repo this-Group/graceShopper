@@ -3,17 +3,19 @@ const { Router } = require('express');
 const productsRouter = express.Router();
 
 const {
-    getAllProducts, 
+    getAllProducts,
     getProductById
  } = require("../db/products")
 
  //GET ALL PRODUCTS
 
 productsRouter.get("/", async (req, res, next) => {
-  
+  console.log('TEST TEST')
   try {
+    console.log("beginning of products get handler")
     const products = await getAllProducts();
     console.log('these are products', products)
+    // return products
     res.status(200).send(products);
   } catch (error) {
     return next(error);
