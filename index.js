@@ -1,23 +1,28 @@
 // This is the Web Server
 const express = require('express');
-const server = express();
-const bodyParser = require('body-parser');
 
+var cors = require('cors')
+ 
+const server = express();
+
+server.use(express.urlencoded({extended:true}))
 const bodyParser = require('body-parser');
-server.use(bodyParser.urlencoded({extended: false}));
 
 server.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.setHeader("Access-Control-Allow-Credentials", false);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "*");
 
-  next(); 
-})
+  next();
+});
+
 
 // create logs for everything
 const morgan = require('morgan');
 server.use(morgan('dev'));
+
+server.use(cors({origin:"*"}))
+//server.options('*', cors())
 
 // handle application/json requests
 server.use(express.json());
@@ -26,7 +31,6 @@ server.use(express.json());
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
-server.use(bodyParser.urlencoded({ extended : false })); 
 
 // here's our API
 server.use('/api', require('./routes'));

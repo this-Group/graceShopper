@@ -3,7 +3,7 @@ const { Router } = require('express');
 const productsRouter = express.Router();
 
 const {
-    getAllProducts, 
+    getAllProducts,
     getProductById
  } = require("../db/products")
 
