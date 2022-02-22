@@ -17,10 +17,7 @@ async function dropTables() {
             DROP TABLE IF EXISTS orders;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
-           
-           
-           
-
+                      
         `);
 
     console.log("Finished dropping tables!");
@@ -81,7 +78,7 @@ async function buildTables() {
     await client.query(`
     CREATE TABLE orders(
       id SERIAL PRIMARY KEY,
-      "userId" INTEGER REFERENCES users(id),
+      "userId" INTEGER REFERENCES users(id) NOT NULL,
       status VARCHAR(255) NOT NULL
     );
     `);

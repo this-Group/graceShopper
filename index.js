@@ -1,28 +1,39 @@
 // This is the Web Server
 const express = require('express');
+
+var cors = require('cors')
+ 
 const server = express();
-// here's our static files
-const path = require('path');
-const morgan = require('morgan');
+
+
+server.use(express.urlencoded({extended:true}))
 const bodyParser = require('body-parser');
-const { client } = require('./db/client');
+
 
 server.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.setHeader("Access-Control-Allow-Credentials", false);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "*");
 
-  next(); 
-})
+  next();
+});
+
 
 server.use(morgan('dev'));
+
+
+server.use(cors({origin:"*"}))
+//server.options('*', cors())
+
+// handle application/json requests
 
 server.use(express.json());
 
 server.use(bodyParser.urlencoded({extended: false}));
 
+
 server.use(express.static(path.join(__dirname, 'build')));
+
 
 server.use('/api', require('./routes'));
 
