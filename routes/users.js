@@ -61,7 +61,7 @@ userRouter.post("/signup", async (req, res, next) => {
                 id: newUser.id
             }, SECRET);
 
-            res.status(200).json(newUser, {token:userToken, user:newUser});
+            res.status(200).json({newUser:newUser, token:userToken});
            /// localStorage.setItem(newUser,'token', userToken );
         }
 
