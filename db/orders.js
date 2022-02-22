@@ -184,8 +184,8 @@ async function getOrderByUserId (userId) {
             ON (users.id = orders."userId")
         JOIN products
             ON (products.id = "productUnits"."productId")
-        WHERE orders.id = ${userId};
-        `);
+        WHERE orders.id = $1;
+        `,[userId]);
         return rows;
     } catch (error) {
         console.error(error);
