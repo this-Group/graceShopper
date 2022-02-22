@@ -11,9 +11,11 @@ const  {
 } = require ("../db/orders")
 
 ordersRouter.get('/', async (req, res, next) => {
+    const userId = req.body;
+    console.log('this is userid', userId);
     try {
-        const {userId}= req.body;
-        const orders = await getOrderByUserId(userId);
+        
+        const orders = await getOrderByUserId(userId.id);
         console.log('get my orders', orders);
         res.status(200).send(orders)
     } catch (error) {

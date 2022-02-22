@@ -1,8 +1,12 @@
 const express = require( 'express');
+const { 
+    createProductUnits,
+    getProductUnits,
+    deleteProductUnits,
+ } = require ('../db/productunits')
 
 const productUnitsRouter = express.Router();
 
-const { createProductUnits, getProductUnits } = require("../db/orders")
 
 productUnitsRouter.get("/", async (req, res, next) => {
     try {
@@ -27,5 +31,17 @@ productUnitsRouter.post('/', async (req, res, next) => {
         return next(error);
     }
 })
+
+productUnitsRouter.delete('/:id', async (req, res, next) => {
+    const  {id}  = req.params;
+    try {
+        
+        const deletedProductUnits = await deleteProductUnits(id);
+
+        res.send(deletedProductUnits);
+    } catch (error) {
+        return next(error);
+    }
+});
 
 module.exports = productUnitsRouter;

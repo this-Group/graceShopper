@@ -22,6 +22,21 @@ async function createOrder ( userId, status ) {
 };
 
 
+//moved to productunits.js
+
+// async function createProductUnits ( orderId, productId, price ) {
+//     console.log('this is the createProductUnits func')
+//     try {
+//         const { rows: [order] } = await client.query(
+//             `
+//             INSERT INTO "productUnits"("orderId", "productId", price)
+//             VALUES ($1, $2, $3)
+//             RETURNING *;
+//             `,
+//             [orderId, productId, price]);
+//         return order;
+
+
 
 
 async function createProductUnits ( {orderId, productId, price} ) {
@@ -35,12 +50,13 @@ async function createProductUnits ( {orderId, productId, price} ) {
             `,
             [orderId, productId, price]);
         return order;
-        
-    } catch (error) {
-        console.log('createProductUnits func failed');
-        console.error(error);
-    }
-};
+
+     
+//     } catch (error) {
+//         console.log('createProductUnits func failed');
+//         console.error(error);
+//     }
+// };
 
 
 async function userCheckForInCart ( userId, status ) {
@@ -72,6 +88,9 @@ async function userCheckForInCart ( userId, status ) {
 
 
 
+//moved go productunits.js
+
+
 // async function createProductUnits ( {orderId, productId, price} ) {
 //     console.log('this is the createProductUnits func')
 //     try {
@@ -90,17 +109,18 @@ async function userCheckForInCart ( userId, status ) {
 //     }
 // };
 
-async function getProductUnits() {
-    try {
-        const { rows: productUnits} = await client.query(`
-        SELECT *
-        FROM "productUnits"
-        `);
-        return productUnits;
-    } catch (error) {
-        throw error;
-    }
-}
+//moved to productunits.js
+// async function getProductUnits() {
+//     try {
+//         const { rows: productUnits} = await client.query(`
+//         SELECT *
+//         FROM "productUnits"
+//         `);
+//         return productUnits;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 
 
 // maske function to make entry in producvt units
@@ -195,8 +215,8 @@ async function getOrderByUserId (userId) {
             ON (users.id = orders."userId")
         JOIN products
             ON (products.id = "productUnits"."productId")
-        WHERE orders.id = ${userId};
-        `);
+        WHERE orders.id = $1;
+        `,[userId]);
         return rows;
     } catch (error) {
         console.error(error);
@@ -237,12 +257,11 @@ async function deleteOrder(){
 
 module.exports = {
     createOrder,
-    createProductUnits,
     userCheckForInCart,
     deleteOrder, 
     getOrderByOrderID,
     getOrderByUserId,
-    getProductUnits,
+    // getProductUnits,
     getOrders
 };
 
