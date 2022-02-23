@@ -32,8 +32,8 @@ productUnitsRouter.post('/', async (req, res, next) => {
     }
 })
 
-productUnitsRouter.delete('/:id', async (req, res, next) => {
-    const  {id}  = req.params;
+productUnitsRouter.delete('/', async (req, res, next) => {
+    const  {id}  = req.body;
     try {
         
         const deletedProductUnits = await deleteProductUnits(id);

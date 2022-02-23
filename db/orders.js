@@ -206,8 +206,8 @@ async function getOrders() {
 async function getOrderByOrderID (orderId) {
     try {
         const {rows} = await client.query(`
-        SELECT orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture
-        FROM orders
+        SELECT orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture, "productUnits".id
+        FROM orders "productUnits"
         JOIN "productUnits" 
             ON (orders.id = "productUnits"."orderId") 
         JOIN users
@@ -227,7 +227,7 @@ async function getOrderByOrderID (orderId) {
 async function getOrderByUserId (userId) {
     try {
         const {rows} = await client.query(`
-        SELECT orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture
+        SELECT * ,orders.id, orders."userId", orders.status, "productUnits"."productId", products.title, products.price, products.picture, "productUnits".id
         FROM orders
         JOIN "productUnits" 
             ON (orders.id = "productUnits"."orderId") 
@@ -235,7 +235,8 @@ async function getOrderByUserId (userId) {
             ON (users.id = orders."userId")
         JOIN products
             ON (products.id = "productUnits"."productId")
-        WHERE orders.id = $1;
+        WHERE orders.id = $1
+        ;
         `,[userId]);
         return rows;
     } catch (error) {
