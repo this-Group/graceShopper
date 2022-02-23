@@ -59,12 +59,13 @@ ordersRouter.delete('/myorders/:id', async (req, res, next) => {
         return next(error);
     }
 })
-ordersRouter.patch('/myorders/:id', async(req, res, next) => {
+ordersRouter.patch('/myorders', async(req, res, next) => {
+        const {orderId, status} = req.body
     try {
         console.log('orders patch ok')
         const {id} = req.params
         const {status} = req.body;
-        const updatedOrder = updateOrderStatus(id, status);
+        const updatedOrder = updateOrderStatus(orderId, status);
 
         res.send(updatedOrder)
     } catch (error) {
