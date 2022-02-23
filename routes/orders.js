@@ -5,6 +5,7 @@ const ordersRouter = express.Router();
 const  {
     createOrder,
     deleteOrder,
+    updateOrderStatus,
     getOrders,
     getOrderByOrderID,
     getOrderByUserId,
@@ -58,5 +59,16 @@ ordersRouter.delete('/myorders/:id', async (req, res, next) => {
         return next(error);
     }
 })
+ordersRouter.patch('/myorders/:id', async(req, res, next) => {
+    try {
+        console.log('orders patch ok')
+        const {id} = req.params
+        const {status} = req.body;
+        const updatedOrder = updateOrderStatus(id, status);
 
+        res.send(updatedOrder)
+    } catch (error) {
+        return next (error)
+    }
+})
 module.exports = ordersRouter;

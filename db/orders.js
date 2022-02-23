@@ -274,12 +274,30 @@ async function deleteOrder(){
         throw error;
     }
 }
+async function updateOrderStatus(id, status){
+    try {
+        const { rows:[order]} = await client.query(`
+        UPDATE orders
+        SET status =$1
+        WHERE id =$2
+        RETURNING *;
+        `, [status, id]);
+        return order;
+        
+    } catch (error) {
+        throw error;
+    }
+
+}
+
+
 
 
 module.exports = {
     createOrder,
     userCheckForInCart,
     deleteOrder, 
+    updateOrderStatus,
     getOrderByOrderID,
     getOrderByUserId,
     // getProductUnits,
