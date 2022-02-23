@@ -146,7 +146,7 @@ userRouter.post("/login", async (req, res) => {
                     password,
                     id: user.id
                 }, SECRET);
-                res.status(200).send({oderId: user.id, userId: user.userId}, {user:user, token : userToken} );
+                res.status(200).send( {user:user, token : userToken} );
                 // localStorage.setItem('token', userToken );
             }
             
