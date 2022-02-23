@@ -92,7 +92,8 @@ async function userCheckForInCart ( userId, status ) {
 
         if(order){
             console.log("userCheckForIntCart is:", true )
-            return order
+            console.log("userCheckForIntCart oderid", order.id )
+            return order.id
         } else{
             console.log("userCheckForIntCart is:", false )
             return false
@@ -213,8 +214,8 @@ async function getOrderByOrderID (orderId) {
             ON (users.id = orders."userId")
         JOIN products
             ON (products.id = "productUnits"."productId")
-        WHERE orders.id = ${orderId};
-        `);
+        WHERE orders.id = 1;
+        `, [orderId]);
         return rows;
     } catch (error) {
 

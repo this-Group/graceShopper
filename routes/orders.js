@@ -10,12 +10,12 @@ const  {
     getOrderByUserId,
 } = require ("../db/orders")
 
-ordersRouter.get('/', async (req, res, next) => {
-    const userId = req.body;
-    console.log('this is userid', userId);
+ordersRouter.get('/:userId', async (req, res, next) => {
+    const userId = req.params;
+    console.log('this is userid', userId.id);
     try {
         
-        const orders = await getOrderByUserId(userId.id);
+        const orders = await getOrderByUserId(userId.userId);
         console.log('get my orders', orders);
         res.status(200).send(orders)
     } catch (error) {
@@ -23,8 +23,10 @@ ordersRouter.get('/', async (req, res, next) => {
     }
 })
 ordersRouter.get('/myorders/:id', async (req, res, next) => {
+    const orderId = req.params;
+    console.log("oderId from the body", orderId)
     try {
-        const orderId = req.params.id;
+        
         const order = getOrderByOrderID(orderId);
         res.send(200).send(order);
     } catch (error) {

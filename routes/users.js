@@ -44,24 +44,25 @@ userRouter.post("/signup", async (req, res, next) => {
     // console.log("checkUser is", checkUsername )
 
     try {
-        const newUser = await createUser( username, password );
-        console.log("This is the new user", newUser )
+        const user = await createUser( username, password );
+        console.log("This is the new user", user )
 
         console.log("directly before sending response")
-        console.log("this is new use var", newUser)
+        console.log("this is new use var", user)
         // const theUser = await newUser.json()
 //         res.send(newUser)
         // res.status(200).send( newUser );
 
 
-        if(newUser){
+        if(user){
             const userToken = jwt.sign({
                 username,
                 password,
-                id: newUser.id
+                id: user.id
             }, SECRET);
 
-            res.status(200).json({newUser:newUser, token:userToken});
+            // res.status(200).json({user:user, token:userToken});
+            res.status(200).send({user:user, token : userToken} );
            /// localStorage.setItem(newUser,'token', userToken );
         }
 
@@ -146,7 +147,7 @@ userRouter.post("/login", async (req, res) => {
                     password,
                     id: user.id
                 }, SECRET);
-                res.status(200).send({oderId: user.id, userId: user.userId}, {user:user, token : userToken} );
+                res.status(200).send({user:{orderId: user.oderId, userId: user.userId}, token : userToken} );
                 // localStorage.setItem('token', userToken );
             }
             

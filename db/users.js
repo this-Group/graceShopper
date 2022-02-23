@@ -75,16 +75,18 @@ async function loginUser( username, password ) {
 
         const cartStatus = "In Cart"
 
-        const inCartCheck = await userCheckForInCart(user.id, cartStatus )
+        const orderId = await userCheckForInCart(user.id, cartStatus )
 
-        console.log("inCartCheck is", inCartCheck)
+        console.log("oderId is", orderId)
 
-        if (inCartCheck == false){
+        if (orderId == false){
             const order = await createOrder( user.id, cartStatus );
             console.log("Create order function at createUser func", order )
             return user, order
         } else{
-            return user, inCartCheck;
+            console.log("user from create login", user)
+            console.log("orderId from create login", orderId)
+            return {userId: user.id, oderId: orderId};
         }
 
         if (!user) return null; 
