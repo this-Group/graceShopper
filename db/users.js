@@ -86,7 +86,7 @@ async function loginUser( username, password ) {
         } else{
             console.log("user from create login", user)
             console.log("orderId from create login", orderId)
-            return {userId: user.id, oderId: orderId};
+            return {userId: user.id, orderId: orderId};
         }
 
         if (!user) return null; 
