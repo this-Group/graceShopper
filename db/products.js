@@ -32,8 +32,24 @@ async function getAllProducts() {
     }
   }
 
+  async function getProductByGenre(genre) {
+    try {
+      const { rows: products } = await client.query(
+        `
+        SELECT *
+        FROM products
+        WHERE genre = $1;
+        `,
+        [genre]
+      );
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   module.exports = {
     getAllProducts,
-    getProductById
-
+    getProductById,
+    getProductByGenre
   };

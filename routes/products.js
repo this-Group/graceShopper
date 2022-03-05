@@ -4,7 +4,8 @@ const productsRouter = express.Router();
 
 const {
     getAllProducts,
-    getProductById
+    getProductById,
+    getProductByGenre
  } = require("../db/products")
 
  //GET ALL PRODUCTS
@@ -31,6 +32,22 @@ productsRouter.get("/:productId", async (req, res, next) => {
     const product = await getProductById(productId);
 
     res.status(200).send(product);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+module.exports = productsRouter;
+
+productsRouter.get("/genre/:genre", async (req, res, next) => {
+  console.log('hello from genre router')
+  const { genre } = req.params;
+  console.log('genre params', genre)
+
+  try {
+    const products = await getProductByGenre(genre);
+
+    res.status(200).send(products);
   } catch (error) {
     return next(error);
   }
